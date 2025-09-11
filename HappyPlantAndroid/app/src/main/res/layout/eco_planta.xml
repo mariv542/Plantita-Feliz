@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!-- Header verde -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:background="@color/green"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Botón atrás -->
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:contentDescription="Volver"
+            android:padding="6dp"/>
+        <!--            android:src="@drawable/ic_arrow_back"-->
+        <!--            android:background="@drawable/bg_circle_black"-->
+
+        <!-- Título -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EcoPlanta"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginStart="12dp"/>
+    </LinearLayout>
+
+    <!-- Campo Nombre de la planta -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardNombrePlanta"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="3dp"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_plant"
+                android:padding="6dp"
+                android:layout_marginEnd="12dp"/>
+            <!--            android:background="@drawable/bg_circle_light_green"-->
+
+            <EditText
+                android:id="@+id/etNombrePlanta"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Nombre de la planta"
+                android:textSize="16sp"
+                android:background="@android:color/transparent"
+                android:padding="0dp"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Campo ID de la maceta -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardIdMaceta"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="3dp"
+        app:layout_constraintTop_toBottomOf="@id/cardNombrePlanta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:padding="6dp"
+                android:layout_marginEnd="12dp"/>
+            <!--                android:src="@drawable/ic_pot"-->
+            <!--                android:background="@drawable/bg_circle_dark_gray"-->
+
+
+            <EditText
+                android:id="@+id/etIdMaceta"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="ID de la maceta"
+                android:textSize="16sp"
+                android:background="@android:color/transparent"
+                android:padding="0dp"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Botón Guardar -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGuardar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="60dp"
+        android:text="Guardar"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:cornerRadius="20dp"
+        app:iconGravity="textEnd"
+        app:iconTint="@android:color/white"
+        app:iconPadding="8dp"
+        app:layout_constraintTop_toBottomOf="@id/cardIdMaceta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/dark_green"/>
+    <!--        app:icon="@drawable/ic_arrow_forward"-->
+
+
+    <!-- Imagen plantas abajo -->
+    <ImageView
+        android:id="@+id/imgPlantas"
+        android:layout_width="0dp"
+        android:layout_height="350dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/plantas"
+        android:foreground="@drawable/bg_gradient_top_to_bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

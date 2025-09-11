@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!-- Header verde -->
+
+    <!-- Texto General -->
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/green"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Botón atrás -->
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:contentDescription="Volver"
+            android:padding="6dp"/>
+        <!--            android:background="@drawable/bg_circle_black"-->
+        <!--            android:src="@drawable/ic_arrow_back" />-->
+
+        <!-- Título -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="EcoPerfil"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:text="Salir"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtGeneral"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="General"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- Card Notificaciones -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardNotificaciones"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="3dp"
+        app:layout_constraintTop_toBottomOf="@id/txtGeneral"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"/>
+            <!--                android:src="@drawable/ic_notifications"-->
+            <!--                android:tint="@color/black"-->
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Notificaciones"
+                android:textSize="16sp"
+                android:layout_marginStart="12dp"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"/>
+            <!--                android:src="@drawable/ic_arrow_right"-->
+            <!--                android:tint="@color/black"-->
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Card Información Personal -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="3dp"
+        app:layout_constraintTop_toBottomOf="@id/cardNotificaciones"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"/>
+            <!--                android:src="@drawable/ic_person"-->
+            <!--                android:tint="@color/black"-->
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Información Personal"
+                android:textSize="16sp"
+                android:layout_marginStart="12dp"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"/>
+            <!--                android:src="@drawable/ic_arrow_right"-->
+            <!--                android:tint="@color/black"-->
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Card Soporte -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardSoporte"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="3dp"
+        app:layout_constraintTop_toBottomOf="@id/cardInfo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"/>
+            <!--                android:src="@drawable/ic_support"-->
+            <!--                android:tint="@color/black"-->
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Soporte"
+                android:textSize="16sp"
+                android:layout_marginStart="12dp"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"/>
+            <!--                android:src="@drawable/ic_arrow_right"-->
+            <!--                android:tint="@color/black"-->
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Card Modo Negro con Switch -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardModoNegro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="3dp"
+        app:layout_constraintTop_toBottomOf="@id/cardSoporte"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"/>
+            <!--                android:src="@drawable/ic_dark_mode"-->
+            <!--                android:tint="@color/black"-->
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Modo Negro"
+                android:textSize="16sp"
+                android:layout_marginStart="12dp"/>
+
+            <Switch
+                android:id="@+id/switchModoNegro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Card Dispositivos Vinculados -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardDispositivos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="3dp"
+        app:layout_constraintTop_toBottomOf="@id/cardModoNegro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"/>
+            <!--                android:src="@drawable/ic_devices"-->
+            <!--                android:tint="@color/black"-->
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Dispositivos Vinculados"
+                android:textSize="16sp"
+                android:layout_marginStart="12dp"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"/>
+            <!--                android:src="@drawable/ic_arrow_right"-->
+            <!--                android:tint="@color/black"-->
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Texto Seguridad -->
+    <TextView
+        android:id="@+id/txtSeguridad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Seguridad y Privacidad"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toBottomOf="@id/cardDispositivos"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- Card Salir -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardSalir"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="3dp"
+        app:layout_constraintTop_toBottomOf="@id/txtSeguridad"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"/>
+            <!--                android:src="@drawable/ic_logout"-->
+            <!--                android:tint="@color/black"-->
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"/>
+            <!--                android:src="@drawable/ic_arrow_right"-->
+            <!--                android:tint="@color/black"/>-->
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
