@@ -9,7 +9,7 @@ Bienvenido a **Plantita Feliz**, una aplicación diseñada para el cuidado intel
 - **Hilary Varela**
 
 ---
-## 👥 Autores
+## Requerimientos
 Emulador requerido Pixel 6 Api 34
 ---
 
