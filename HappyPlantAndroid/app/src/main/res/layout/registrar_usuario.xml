@@ -8,8 +8,6 @@
 
     <!-- Imagen de fondo -->
 
-    <!-- Logo -->
-
     <ImageView
         android:id="@+id/imgBackground"
         android:layout_width="0dp"
@@ -22,6 +20,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/bg_btn_round_green"
+        android:src="@drawable/icon_btn_atras"
+        app:tint="@color/white"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/desc_btn_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
+
+    <!--Logo-->
     <ImageView
         android:id="@+id/logoApp"
         android:layout_width="80dp"

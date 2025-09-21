@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Happy Plant</string>
+    <string name="desc_btn_back">Botón de regresar</string>
+
 </resources>
