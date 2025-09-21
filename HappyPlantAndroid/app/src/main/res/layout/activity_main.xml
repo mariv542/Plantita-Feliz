@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:foreground="#50FFFFFF"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/brocolis" />
+        android:src="@drawable/brocolis" />
 
     <!-- Contenedor de contenido principal -->
     <LinearLayout
