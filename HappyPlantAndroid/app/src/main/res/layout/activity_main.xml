@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:foreground="#50FFFFFF"
         android:scaleType="centerCrop"
-        android:src="@drawable/brocolis" />
+        android:src="@drawable/icon_brocolis" />
 
     <!-- Contenedor de contenido principal -->
     <LinearLayout
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
             android:contentDescription="Logo"
-            android:src="@drawable/logo_sin_fondo" />
+            android:src="@drawable/icon_logo_sin_fondo" />
 
         <TextView
             android:id="@+id/titleText"

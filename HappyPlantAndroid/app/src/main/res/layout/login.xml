@@ -18,7 +18,7 @@
         android:layout_width="410dp"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/plantas"
+        android:src="@drawable/icon_plantas"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="-40dp"
-        android:src="@drawable/img_login"
+        android:src="@drawable/icon_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgBackground" />
@@ -131,7 +131,7 @@
             android:id="@+id/btnInstagram"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/instagram"
+            android:src="@drawable/icon_instagram"
             android:backgroundTint="@null"
             android:background="@null"
             android:contentDescription="Instagram" />
@@ -140,7 +140,7 @@
             android:id="@+id/btnFacebook"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/facebook"
+            android:src="@drawable/icon_facebook"
             android:background="@null"
             android:contentDescription="Facebook"
             android:layout_marginStart="16dp"/>

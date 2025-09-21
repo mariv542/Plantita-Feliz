@@ -1,6 +1,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Imagen de fondo -->
-    <item android:drawable="@drawable/plantas"/>
+    <item android:drawable="@drawable/icon_plantas"/>
 
     <!-- Gradiente encima -->
     <item android:drawable="@drawable/bg_gradient_top_to_bottom"/>

@@ -63,7 +63,7 @@
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:src="@drawable/ic_plant"
+                android:src="@drawable/icon_plant"
                 android:padding="6dp"
                 android:layout_marginEnd="12dp"/>
             <!--            android:background="@drawable/bg_circle_light_green"-->
@@ -149,7 +149,7 @@
         android:layout_width="0dp"
         android:layout_height="350dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/plantas"
+        android:src="@drawable/icon_plantas"
         android:foreground="@drawable/bg_gradient_top_to_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
