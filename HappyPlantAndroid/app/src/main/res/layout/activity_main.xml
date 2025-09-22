@@ -61,7 +61,7 @@
 
         <!-- Botón Comenzar -->
         <Button
-            android:id="@+id/startButton"
+            android:id="@+id/btn_main_comenzar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
