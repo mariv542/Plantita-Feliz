@@ -23,7 +23,7 @@
 
         <!-- Botón atrás -->
         <ImageButton
-            android:id="@+id/btnBack"
+            android:id="@+id/btn_ecoAvance_regresar"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:background="@drawable/bg_btn_round_green"

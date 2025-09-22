@@ -61,6 +61,7 @@
 
             <!-- EcoAvance -->
             <Button
+                android:id="@+id/btn_menu_ecoAvance"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:text="EcoAvance"
@@ -73,6 +74,7 @@
 
             <!-- EcoAviso -->
             <Button
+                android:id="@+id/btn_menu_ecoAviso"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:text="EcoAviso"
@@ -83,6 +85,7 @@
 
             <!-- EcoControl -->
             <Button
+                android:id="@+id/btn_menu_ecoControl"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:text="EcoControl"
@@ -94,6 +97,7 @@
 
             <!-- EcoPerfil -->
             <Button
+                android:id="@+id/btn_menu_perfil"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:text="EcoPerfil"
@@ -104,6 +108,7 @@
 
             <!-- EcoPlanta -->
             <Button
+                android:id="@+id/btn_menu_ecoPlanta"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:text="EcoPlanta"

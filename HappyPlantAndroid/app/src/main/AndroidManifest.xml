@@ -25,6 +25,12 @@
         <!-- otras actividades -->
         <activity android:name=".model.login_activity" />
         <activity android:name=".model.menu_activity" />
+        <activity android:name=".model.perfil_activity" />
+        <activity android:name=".model.ecoAvance_activity" />
+        <activity android:name=".model.ecoAviso_activity" />
+        <activity android:name=".model.ecoControl_activity" />
+        <activity android:name=".model.ecoPlanta_activity" />
+        <activity android:name=".model.registrar_activity" />
 
     </application>
 

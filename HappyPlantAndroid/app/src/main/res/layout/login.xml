@@ -149,7 +149,7 @@
 
     <!-- Links -->
     <TextView
-        android:id="@+id/txtRegistro"
+        android:id="@+id/txt_login_registrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="¿No tienes una cuenta? Regístrate."
@@ -167,7 +167,7 @@
         android:text="Olvidé mi contraseña"
         android:textColor="@color/green"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/txtRegistro"
+        app:layout_constraintTop_toBottomOf="@id/txt_login_registrar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp"/>
