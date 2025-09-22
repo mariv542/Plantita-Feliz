@@ -27,8 +27,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        >
+        app:layout_constraintEnd_toEndOf="parent">
 
         <!-- Títulos -->
         <TextView
@@ -60,64 +59,129 @@
             android:rowOrderPreserved="false">
 
             <!-- EcoAvance -->
-            <Button
-                android:id="@+id/btn_menu_ecoAvance"
+            <LinearLayout
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:text="EcoAvance"
-                android:textColor="@android:color/white"
-                app:backgroundTint="@color/green"
+                android:orientation="vertical"
+                android:gravity="center"
                 android:background="@drawable/btn_square"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="16dp"/>
-            <!--                android:drawableTop="@drawable/ic_avance"-->
+                android:backgroundTint="@color/green"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp">
+
+                <ImageButton
+                    android:id="@+id/btn_menu_ecoAvance"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_water64"
+                    app:tint="@color/white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EcoAvance"
+                    android:textColor="@android:color/white"/>
+            </LinearLayout>
 
             <!-- EcoAviso -->
-            <Button
-                android:id="@+id/btn_menu_ecoAviso"
+            <LinearLayout
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:text="EcoAviso"
-                android:textColor="@android:color/white"
-                app:backgroundTint="@color/green"
-                android:background="@drawable/btn_square"/>
-            <!--                android:drawableTop="@drawable/ic_aviso"-->
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/btn_square"
+                android:backgroundTint="@color/green">
+
+                <ImageButton
+                    android:id="@+id/btn_menu_ecoAviso"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_notificacion64"
+                    app:tint="@color/white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EcoAviso"
+                    android:textColor="@android:color/white"/>
+            </LinearLayout>
 
             <!-- EcoControl -->
-            <Button
-                android:id="@+id/btn_menu_ecoControl"
+            <LinearLayout
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:text="EcoControl"
-                android:textColor="@android:color/white"
-                app:backgroundTint="@color/green"
+                android:orientation="vertical"
+                android:gravity="center"
                 android:background="@drawable/btn_square"
-                android:layout_marginBottom="16dp"/>
-            <!--                android:drawableTop="@drawable/ic_control"-->
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/green">
+
+                <ImageButton
+                    android:id="@+id/btn_menu_ecoControl"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_devices64"
+                    app:tint="@color/white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EcoControl"
+                    android:textColor="@android:color/white"/>
+            </LinearLayout>
 
             <!-- EcoPerfil -->
-            <Button
-                android:id="@+id/btn_menu_perfil"
+            <LinearLayout
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:text="EcoPerfil"
-                android:textColor="@android:color/white"
-                app:backgroundTint="@color/green"
-                android:background="@drawable/btn_square"/>
-            <!--                android:drawableTop="@drawable/ic_perfil"-->
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/btn_square"
+                android:backgroundTint="@color/green">
+
+                <ImageButton
+                    android:id="@+id/btn_menu_perfil"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_person64"
+                    app:tint="@color/white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EcoPerfil"
+                    android:textColor="@android:color/white"/>
+            </LinearLayout>
 
             <!-- EcoPlanta -->
-            <Button
-                android:id="@+id/btn_menu_ecoPlanta"
+            <LinearLayout
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:text="EcoPlanta"
-                android:textColor="@android:color/white"
-                app:backgroundTint="@color/green"
+                android:orientation="vertical"
+                android:gravity="center"
                 android:background="@drawable/btn_square"
-                android:layout_gravity="center"
-                android:layout_columnSpan="2"/>
-            <!--                android:drawableTop="@drawable/ic_planta"-->
+                android:backgroundTint="@color/green"
+                android:layout_columnSpan="2"
+                android:layout_gravity="center">
+
+                <ImageButton
+                    android:id="@+id/btn_menu_ecoPlanta"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@color/green"
+                    android:src="@drawable/ic_plant64"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EcoPlanta"
+                    android:textColor="@android:color/white"/>
+            </LinearLayout>
         </GridLayout>
 
     </LinearLayout>

@@ -3,6 +3,7 @@ package com.example.happyplant.model;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,11 +17,11 @@ public class menu_activity extends AppCompatActivity {
         setContentView(R.layout.menu);
         //+--------------------------------------------------------------------------------------------+
 
-        Button btnMenu_ecoAvance = findViewById(R.id.btn_menu_ecoAvance);
-        Button btnMenu_ecoAviso = findViewById(R.id.btn_menu_ecoAviso);
-        Button btnMenu_ecoPlanta = findViewById(R.id.btn_menu_ecoPlanta);
-        Button btnMenu_ecoControl = findViewById(R.id.btn_menu_ecoControl);
-        Button btnMenu_perfil = findViewById(R.id.btn_menu_perfil);
+        ImageButton btnMenu_ecoAvance = findViewById(R.id.btn_menu_ecoAvance);
+        ImageButton btnMenu_ecoAviso = findViewById(R.id.btn_menu_ecoAviso);
+        ImageButton btnMenu_ecoPlanta = findViewById(R.id.btn_menu_ecoPlanta);
+        ImageButton btnMenu_ecoControl = findViewById(R.id.btn_menu_ecoControl);
+        ImageButton btnMenu_perfil = findViewById(R.id.btn_menu_perfil);
         //+--------------------------------------------------------------------------------------------+
 
         btnMenu_ecoAvance.setOnClickListener(v -> {
