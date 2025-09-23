@@ -1,28 +1,27 @@
-package com.example.happyplant.model;
+package com.example.happyplant.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.happyplant.R;
 
-public class registrar_activity extends AppCompatActivity {
+public class ecoAvance_activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
-        setContentView(R.layout.registrar_usuario);
+        setContentView(R.layout.eco_avance);
         //+--------------------------------------------------------------------------------------------+
 
-        ImageButton btnRegistrar_regresar = findViewById(R.id.btn_registrar_regresar);
+        ImageButton btnEcoAvance_regresar = findViewById(R.id.btn_ecoAvance_regresar);
         //+--------------------------------------------------------------------------------------------+
 
-        btnRegistrar_regresar.setOnClickListener(v -> {
+        btnEcoAvance_regresar.setOnClickListener(v -> {
             // Creamos un Intent para ir a menu_activity
-            Intent intent = new Intent(registrar_activity.this, login_activity.class);
+            Intent intent = new Intent(ecoAvance_activity.this, menu_activity.class);
             startActivity(intent);
             // para serrar la pestaña dde login y que no vuelva atras dar finish:
             // finish();

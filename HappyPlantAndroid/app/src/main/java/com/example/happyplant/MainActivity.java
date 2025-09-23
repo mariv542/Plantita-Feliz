@@ -6,11 +6,8 @@ import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.example.happyplant.model.login_activity;
+import com.example.happyplant.view.login_activity;
 
 public class MainActivity extends AppCompatActivity {
 

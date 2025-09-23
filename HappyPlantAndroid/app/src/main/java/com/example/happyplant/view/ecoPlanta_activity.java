@@ -1,4 +1,4 @@
-package com.example.happyplant.model;
+package com.example.happyplant.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,20 +8,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.happyplant.R;
 
-public class ecoAviso_activity extends AppCompatActivity {
+public class ecoPlanta_activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
-        setContentView(R.layout.eco_aviso);
+        setContentView(R.layout.eco_planta);
         //+--------------------------------------------------------------------------------------------+
 
-        ImageButton btnEcoAviso_regresar = findViewById(R.id.btn_ecoAviso_regresar);
+        ImageButton btnEcoPlanta_regresar = findViewById(R.id.btn_ecoPlanta_regresar);
         //+--------------------------------------------------------------------------------------------+
 
-        btnEcoAviso_regresar.setOnClickListener(v -> {
+        btnEcoPlanta_regresar.setOnClickListener(v -> {
             // Creamos un Intent para ir a menu_activity
-            Intent intent = new Intent(ecoAviso_activity.this, menu_activity.class);
+            Intent intent = new Intent(ecoPlanta_activity.this, menu_activity.class);
             startActivity(intent);
             // para serrar la pestaña dde login y que no vuelva atras dar finish:
             // finish();

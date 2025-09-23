@@ -1,6 +1,5 @@
-package com.example.happyplant.model;
+package com.example.happyplant.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -9,8 +8,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.happyplant.R;
-
-import org.w3c.dom.Text;
 
 public class login_activity extends AppCompatActivity {
 

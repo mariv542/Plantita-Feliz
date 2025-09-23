@@ -1,4 +1,4 @@
-package com.example.happyplant.model;
+package com.example.happyplant.view;
 
 import android.content.Intent;
 import android.os.Bundle;

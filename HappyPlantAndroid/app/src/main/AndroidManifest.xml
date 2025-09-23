@@ -23,14 +23,14 @@
         </activity>
 
         <!-- otras actividades -->
-        <activity android:name=".model.login_activity" />
-        <activity android:name=".model.menu_activity" />
-        <activity android:name=".model.perfil_activity" />
-        <activity android:name=".model.ecoAvance_activity" />
-        <activity android:name=".model.ecoAviso_activity" />
-        <activity android:name=".model.ecoControl_activity" />
-        <activity android:name=".model.ecoPlanta_activity" />
-        <activity android:name=".model.registrar_activity" />
+        <activity android:name=".view.login_activity" />
+        <activity android:name=".view.menu_activity" />
+        <activity android:name=".view.perfil_activity" />
+        <activity android:name=".view.ecoAvance_activity" />
+        <activity android:name=".view.ecoAviso_activity" />
+        <activity android:name=".view.ecoControl_activity" />
+        <activity android:name=".view.ecoPlanta_activity" />
+        <activity android:name=".view.registrar_activity" />
 
     </application>
 
