@@ -1,26 +1,27 @@
-name: Android Build
+name: Android CI
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+  pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Create google-services.json from secret
-        run: |
-          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > app/google-services.json
-
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
           distribution: 'temurin'
+          java-version: '17'
+
+      - name: Decode google-services.json secret
+        run: |
+          echo "${{ secrets.FIREBASE_API_KEY }}" > app/google-services.json
 
       - name: Build Debug APK
         run: ./gradlew assembleDebug
