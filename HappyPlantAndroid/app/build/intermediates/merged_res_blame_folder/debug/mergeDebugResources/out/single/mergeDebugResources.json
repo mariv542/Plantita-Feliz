@@ -1,0 +1,226 @@
+[
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_dark_mode.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_dark_mode.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_icon_instagram.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/icon_instagram.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_icon_facebook.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/icon_facebook.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_person.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_person.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_gradient_bottom.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/gradient_bottom.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/layout_registrar_usuario.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/layout/registrar_usuario.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_devices.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_devices.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_snow.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_snow.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_support.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_support.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/layout_login.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/layout/login.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/xml_data_extraction_rules.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_bg_gradient_top_to_bottom.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/bg_gradient_top_to_bottom.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_plant.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_plant.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/mipmap-anydpi_ic_launcher_round.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/mipmap-anydpi/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/layout_eco_avance.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/layout/eco_avance.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/layout_eco_planta.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/layout/eco_planta.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_devices64.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_devices64.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_arrow_right.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_arrow_right.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_btn_square.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/btn_square.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_icon_brocolis.png.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/icon_brocolis.png"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_logout.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_logout.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_img_plantas_overlay.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/img_plantas_overlay.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_icon_plantas.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/icon_plantas.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_notificacion64.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_notificacion64.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/layout_eco_aviso.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/layout/eco_aviso.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_icon_diagrama.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/icon_diagrama.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_icon_plant.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/icon_plant.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/layout_activity_main.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_icon_login.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/icon_login.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/xml_backup_rules.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_icon_btn_atras.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/icon_btn_atras.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_person64.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_person64.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_notificacion.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_notificacion.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_bg_light_gray_rounded.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/bg_light_gray_rounded.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_icon_logo_sin_fondo.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/icon_logo_sin_fondo.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/mipmap-anydpi_ic_launcher.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/mipmap-anydpi/ic_launcher.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/layout_eco_perfil.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/layout/eco_perfil.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/layout_menu.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/layout/menu.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_water.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_water.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.happyplant.app-main-43:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_water64.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_water64.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_plant64.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_plant64.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_bg_btn_round_green.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/bg_btn_round_green.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/layout_eco_control.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/layout/eco_control.xml"
+    },
+    {
+        "merged": "com.example.happyplant.app-debug-41:/drawable_ic_fire.xml.flat",
+        "source": "com.example.happyplant.app-main-43:/drawable/ic_fire.xml"
+    }
+]

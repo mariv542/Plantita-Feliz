@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="blue">#2196F3</color>
+    <color name="dark_gray">#424242</color>
+    <color name="dark_green">#1B5E20</color>
+    <color name="darker_gray">#444444</color>
+    <color name="gray">#757575</color>
+    <color name="green">#2E7D32</color>
+    <color name="light_gray">#D3D3D3</color>
+    <color name="lime_green">#8BC34A</color>
+    <color name="red">#F44336</color>
+    <color name="teal_200">#4DD0E1</color>
+    <color name="white">#FFFFFF</color>
+    <string name="app_name">Happy Plant</string>
+    <string name="desc_btn_back">Botón de regresar</string>
+    <string name="gcm_defaultSenderId" translatable="false">319817780871</string>
+    <string name="google_api_key" translatable="false">AIzaSyAV1JLyKu8M-qrVYlhCwVAhDhBsnViUXnE</string>
+    <string name="google_app_id" translatable="false">1:319817780871:android:671f06517ee574e202f222</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAV1JLyKu8M-qrVYlhCwVAhDhBsnViUXnE</string>
+    <string name="google_storage_bucket" translatable="false">happy-plant-44668.firebasestorage.app</string>
+    <string name="project_id" translatable="false">happy-plant-44668</string>
+    <style name="Base.Theme.HappyPlant" parent="Theme.Material3.DayNight.NoActionBar">
+        
+        
+    </style>
+    <style name="Theme.HappyPlant" parent="Base.Theme.HappyPlant"/>
+</resources>

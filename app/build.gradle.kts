@@ -41,15 +41,16 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    // Import the Firebase BoM
+
+    //  Firebase BoM (maneja versiones automáticamente)
     implementation(platform("com.google.firebase:firebase-bom:34.3.0"))
 
-
-    // TODO: Add the dependencies for Firebase products you want to use
-    // When using the BoM, don't specify versions in Firebase dependencies
+    //  Firebase Analytics (opcional, para métricas)
     implementation("com.google.firebase:firebase-analytics")
 
+    //  Firebase Realtime Database
+    implementation("com.google.firebase:firebase-database")
 
-    // Add the dependencies for any other desired Firebase products
-    // https://firebase.google.com/docs/android/setup#available-libraries
+    //  Firebase Auth (solo si usarás login/registro)
+    implementation("com.google.firebase:firebase-auth")
 }
