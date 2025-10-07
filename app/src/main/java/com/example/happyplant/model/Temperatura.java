@@ -7,6 +7,12 @@ public class Temperatura {
     private double valor;
     private LocalDateTime fechaHora;
 
+    public Temperatura (){}
+    public Temperatura (String plantId, double valor, LocalDateTime fechaHora){
+        this.plantId = plantId;
+        this.valor = valor;
+        this.fechaHora = fechaHora;
+    }
     //getters y setters
 
     public String getPlantId() { return plantId; }

@@ -7,6 +7,13 @@ public class Consumo {
     private double valor;
     private LocalDateTime fechaHora;
 
+    public Consumo(){}
+    public Consumo(String plataId, double valor, LocalDateTime fechaHora){
+        this.plataId = plataId;
+        this.valor = valor;
+        this.fechaHora = fechaHora;
+    }
+
     public String getPlataId() {return plataId;}
     public void setPlataId(String plataId){this.plataId = plataId;}
     public double getValor(){return valor;}

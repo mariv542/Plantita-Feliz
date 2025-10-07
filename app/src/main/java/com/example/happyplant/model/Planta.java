@@ -7,11 +7,31 @@ public class Planta {
     private String nombre;
     private Parametros parametros;
     private List<Temperatura> temperaturas;
-    private List<Humedad> humedades;
+    private List<Humedad> humedad;
     private List<NivelAgua> nivelAguas;
     private List<Consumo> consumos;
     private List<EstadoActuador> actuadores;
     private List<Alerta> alertas;
+
+    public Planta (){}
+    public Planta (String id, String nombre, Parametros parametros,
+                   List<Temperatura> temperaturas,
+                   List<Humedad> humedad,
+                   List<NivelAgua> nivelAguas,
+                   List<Consumo> consumos,
+                   List<EstadoActuador> actuadores,
+                   List<Alerta> alertas){
+        this.id = id;
+        this.nombre = nombre;
+        this.parametros = parametros;
+        this.temperaturas = temperaturas;
+        this.humedad = humedad;
+        this.nivelAguas = nivelAguas;
+        this.consumos =  consumos;
+        this.actuadores = actuadores;
+        this.alertas = alertas;
+
+    }
 
     //getters y setters
     public String getId() { return id; }
@@ -26,8 +46,8 @@ public class Planta {
     public List<Temperatura> getTemperaturas() { return temperaturas; }
     public void setTemperaturas(List<Temperatura> temperaturas) { this.temperaturas = temperaturas; }
     //Humedad
-    public List<Humedad> getHumedades() {return humedades; }
-    public void setHumedades(List<Humedad> humedades) { this.humedades = humedades; }
+    public List<Humedad> getHumedad() {return humedad; }
+    public void setHumedad(List<Humedad> humedad) { this.humedad = humedad; }
     //NivelAgua
     public List<NivelAgua> getNivelAguas() {return nivelAguas; }
     public void setNivelAguas(List<NivelAgua> nivelAgua) { this.nivelAguas = nivelAguas; }

@@ -7,6 +7,13 @@ public class Humedad {
     private double valor;
     private LocalDateTime fechaHora;
 
+    public Humedad(){}
+    public Humedad(String plantaId, double  valor, LocalDateTime fechaHora){
+        this.plantaId = plantaId;
+        this.valor = valor;
+        this.fechaHora = fechaHora;
+    }
+
     public String getPlantaId() {return plantaId; }
     public void setPlantaId(String plantaId) { this.plantaId = plantaId; }
 

@@ -9,9 +9,7 @@ public class Usuario {
     private String passwordHash;
     private List<Planta> plantasIds;
 
-    public Usuario () {
-
-    }
+    public Usuario () {}
 
     public Usuario (String id, String nombre, String email, String passwordHash ) {
         this.id = id ;

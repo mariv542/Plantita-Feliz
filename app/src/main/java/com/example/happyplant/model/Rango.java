@@ -6,7 +6,6 @@ public class Rango {
     private double maximo;
 
     public Rango() {}
-
     public Rango(String id, double minimo, double maximo) {
         this.id = id;
         this.minimo = minimo;

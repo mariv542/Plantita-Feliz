@@ -13,11 +13,8 @@ public class Parametros {
     public Parametros() {}
 
     // Constructor completo
-    public Parametros(String id, String plantaId,
-                      Rango rangoHumedadSuelo,
-                      Rango rangoTemperatura,
-                      Rango rangoHumedadAmbiental,
-                      Rango rangoNivelAgua) {
+    public Parametros(String id, String plantaId, Rango rangoHumedadSuelo,
+                      Rango rangoTemperatura, Rango rangoHumedadAmbiental, Rango rangoNivelAgua) {
         this.id = id;
         this.plantaId = plantaId;
         this.rangoHumedadSuelo = rangoHumedadSuelo;
