@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/eco_avance"
     android:layout_width="match_parent"
@@ -15,8 +16,6 @@
         android:orientation="horizontal"
         android:padding="16dp"
         android:gravity="center_vertical"
-        android:clipToOutline="true"
-        android:backgroundTintMode="src_in"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -44,22 +43,44 @@
             android:textStyle="bold"/>
     </LinearLayout>
 
-    <!-- Gráfico -->
+    <!-- Spinner para seleccionar planta -->
+    <Spinner
+        android:id="@+id/spinnerPlantas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Contenedor de cards -->
+    <!-- Nombre de la planta seleccionada -->
+    <TextView
+        android:id="@+id/txtNombrePlanta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre de la Planta"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/spinnerPlantas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Imagen de Dashboard o gráfico -->
     <ImageView
         android:id="@+id/chartView"
         android:layout_width="0dp"
-        android:layout_height="380dp"
+        android:layout_height="300dp"
         android:layout_marginTop="16dp"
-        android:contentDescription="Chart"
+        android:contentDescription="Imagen del Dashboard"
         android:scaleType="fitCenter"
-        android:src="@drawable/icon_diagrama"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBar" />
+        app:layout_constraintTop_toBottomOf="@id/txtNombrePlanta" />
 
+    <!-- Contenedor de tarjetas del Dashboard -->
     <LinearLayout
         android:id="@+id/cardsContainer"
         android:layout_width="match_parent"
@@ -72,8 +93,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Card Edad -->
+        <!-- Card Temperatura -->
         <LinearLayout
+            android:id="@+id/cardTemperatura"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
@@ -83,9 +105,10 @@
             android:background="@drawable/bg_light_gray_rounded">
 
             <TextView
+                android:id="@+id/txtTemperatura"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="17yr"
+                android:text="-- °C"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"/>
@@ -93,13 +116,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edad"
+                android:text="Temperatura"
                 android:textSize="12sp"
                 android:textColor="@color/dark_gray"/>
         </LinearLayout>
 
-        <!-- Card Peso -->
+        <!-- Card Humedad del Suelo -->
         <LinearLayout
+            android:id="@+id/cardHumedadSuelo"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
@@ -109,9 +133,10 @@
             android:background="@drawable/bg_light_gray_rounded">
 
             <TextView
+                android:id="@+id/txtHumedadSuelo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="68kg"
+                android:text="-- %"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"/>
@@ -119,13 +144,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Peso"
+                android:text="Humedad del Suelo"
                 android:textSize="12sp"
                 android:textColor="@color/dark_gray"/>
         </LinearLayout>
 
-        <!-- Card Calorías -->
+        <!-- Card Humedad Ambiental -->
         <LinearLayout
+            android:id="@+id/cardHumedadAmbiental"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
@@ -135,9 +161,10 @@
             android:background="@drawable/bg_light_gray_rounded">
 
             <TextView
+                android:id="@+id/txtHumedadAmbiental"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="978kcal"
+                android:text="-- %"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"/>
@@ -145,11 +172,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Daily Intake"
+                android:text="Humedad Ambiental"
                 android:textSize="12sp"
                 android:textColor="@color/dark_gray"/>
         </LinearLayout>
-
-</LinearLayout>
-
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
