@@ -26,7 +26,7 @@ public class ecoPlanta_activity extends AppCompatActivity {
         gpsHelper.obtenerUbicacion((lat, lon) -> {
             String ciudad = gpsHelper.obtenerCiudad(lat, lon, this);
             txtGPS.setText("Ciudad: " + ciudad);
-        });
+        }); 
         ImageButton btnEcoPlanta_regresar = findViewById(R.id.btn_ecoPlanta_regresar);
         //+--------------------------------------------------------------------------------------------+
 

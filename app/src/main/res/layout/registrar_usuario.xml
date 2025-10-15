@@ -86,7 +86,7 @@
         android:layout_marginEnd="24dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtCorreo"
+            android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress" />
@@ -108,7 +108,7 @@
         <!--        app:startIconDrawable="@drawable/ic_lock"-->
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtPassword"
+            android:id="@+id/etPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
@@ -130,7 +130,7 @@
         <!--        app:startIconDrawable="@drawable/ic_lock"-->
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtConfirmPassword"
+            android:id="@+id/etConfirmPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
