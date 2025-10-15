@@ -22,6 +22,7 @@ import com.example.happyplant.model.Parametros;
 import com.example.happyplant.model.Planta;
 import com.example.happyplant.model.Rango;
 import com.example.happyplant.model.Temperatura;
+import com.example.happyplant.utils.GPSHelper;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,7 +30,9 @@ import java.util.BitSet;
 import java.util.List;
 
 public class ecoAvance_activity extends AppCompatActivity {
-
+    // para GPS
+    private TextView txtGPS;
+    private GPSHelper gpsHelper;
     private Spinner spinnerPlantas;
     private ImageView chartView;
     private TextView txtNombrePlanta, txtTemperatura, txtHumedadSuelo, txtHumedadAmbiental;
@@ -50,6 +53,15 @@ public class ecoAvance_activity extends AppCompatActivity {
         txtTemperatura = findViewById(R.id.txtTemperatura);
         txtHumedadSuelo = findViewById(R.id.txtHumedadSuelo);
         txtHumedadAmbiental = findViewById(R.id.txtHumedadAmbiental);
+
+        //Para GPS
+        txtGPS = findViewById(R.id.txtGPS);
+
+        gpsHelper = new GPSHelper(this);
+        gpsHelper.obtenerUbicacion((lat, lon) -> {
+            String ciudad = gpsHelper.obtenerCiudad(lat, lon, this);
+            txtGPS.setText("Ciudad: " + ciudad);
+        });
 
         //+--------------------------------------------------------------------------------------------+
 
