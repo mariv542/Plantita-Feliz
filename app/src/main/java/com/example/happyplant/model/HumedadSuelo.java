@@ -2,13 +2,13 @@ package com.example.happyplant.model;
 
 import java.time.LocalDateTime;
 
-public class Humedad {
+public class HumedadSuelo{
     private String plantaId;
     private double valor;
     private LocalDateTime fechaHora;
 
-    public Humedad(){}
-    public Humedad(String plantaId, double  valor, LocalDateTime fechaHora){
+    public HumedadSuelo(){}
+    public HumedadSuelo(String plantaId, double  valor, LocalDateTime fechaHora){
         this.plantaId = plantaId;
         this.valor = valor;
         this.fechaHora = fechaHora;

@@ -17,7 +17,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.happyplant.R;
-import com.example.happyplant.model.Humedad;
+import com.example.happyplant.model.HumedadAmbiental;
+import com.example.happyplant.model.HumedadSuelo;
 import com.example.happyplant.model.Parametros;
 import com.example.happyplant.model.Planta;
 import com.example.happyplant.model.Rango;
@@ -106,7 +107,7 @@ public class ecoAvance_activity extends AppCompatActivity {
         //planta 1
         Planta cactus = new Planta();
         cactus.setId("1");
-        cactus.setNombre("Captus");
+        cactus.setNombre("Cactus");
 
         Parametros p1 = new Parametros();
         p1.setRangoHumedadSuelo(new Rango("r1", 10, 40));
@@ -115,19 +116,27 @@ public class ecoAvance_activity extends AppCompatActivity {
         p1.setRangoNivelAgua(new Rango("r4", 0, 5));
         cactus.setParametros(p1);
 
+        // Temperaturas
         List<Temperatura> temps1 = new ArrayList<>();
-        temps1.add(new Temperatura("1",28, LocalDateTime.now().minusHours(2)));
-        temps1.add(new Temperatura("1",30, LocalDateTime.now()));
+        temps1.add(new Temperatura("1", 28, LocalDateTime.now().minusHours(2)));
+        temps1.add(new Temperatura("1", 30, LocalDateTime.now()));
         cactus.setTemperaturas(temps1);
 
-        List<Humedad> hum1 = new ArrayList<>();
-        hum1.add(new Humedad("1", 35, LocalDateTime.now().minusHours(2)));
-        hum1.add(new Humedad("1", 32, LocalDateTime.now()));
-        cactus.setHumedad(hum1);
+        // Humedad de suelo
+        List<HumedadSuelo> humS1 = new ArrayList<>();
+        humS1.add(new HumedadSuelo("1", 35, LocalDateTime.now().minusHours(2)));
+        humS1.add(new HumedadSuelo("1", 32, LocalDateTime.now()));
+        cactus.setHumedadesSuelo(humS1);
+
+        // Humedad ambiental
+        List<HumedadAmbiental> humA1 = new ArrayList<>();
+        humA1.add(new HumedadAmbiental("1", 40, LocalDateTime.now().minusHours(2)));
+        humA1.add(new HumedadAmbiental("1", 45, LocalDateTime.now()));
+        cactus.setHumedadesAmbientales(humA1);
 
         listaPlantas.add(cactus);
 
-        //planta 2
+        // Planta 2
         Planta helecho = new Planta();
         helecho.setId("2");
         helecho.setNombre("Helecho");
@@ -140,19 +149,23 @@ public class ecoAvance_activity extends AppCompatActivity {
         helecho.setParametros(p2);
 
         List<Temperatura> temps2 = new ArrayList<>();
-        temps2.add(new Temperatura("2",22, LocalDateTime.now()));
+        temps2.add(new Temperatura("2", 22, LocalDateTime.now()));
         helecho.setTemperaturas(temps2);
 
-        List<Humedad> hum2 = new ArrayList<>();
-        hum2.add(new Humedad("2", 65, LocalDateTime.now()));
-        helecho.setHumedad(hum2);
+        List<HumedadSuelo> humS2 = new ArrayList<>();
+        humS2.add(new HumedadSuelo("2", 65, LocalDateTime.now()));
+        helecho.setHumedadesSuelo(humS2);
+
+        List<HumedadAmbiental> humA2 = new ArrayList<>();
+        humA2.add(new HumedadAmbiental("2", 70, LocalDateTime.now()));
+        helecho.setHumedadesAmbientales(humA2);
 
         listaPlantas.add(helecho);
 
-        //planta 3
+        // Planta 3
         Planta carnivora = new Planta();
         carnivora.setId("3");
-        carnivora.setNombre("Carnivora");
+        carnivora.setNombre("Carnívora");
 
         Parametros p3 = new Parametros();
         p3.setRangoHumedadSuelo(new Rango("r9", 25, 47));
@@ -162,14 +175,19 @@ public class ecoAvance_activity extends AppCompatActivity {
         carnivora.setParametros(p3);
 
         List<Temperatura> temps3 = new ArrayList<>();
-        temps3.add(new Temperatura("3",50, LocalDateTime.now().minusHours(2)));
-        temps3.add(new Temperatura("3",40, LocalDateTime.now()));
+        temps3.add(new Temperatura("3", 50, LocalDateTime.now().minusHours(2)));
+        temps3.add(new Temperatura("3", 40, LocalDateTime.now()));
         carnivora.setTemperaturas(temps3);
 
-        List<Humedad> hum3 = new ArrayList<>();
-        hum3.add(new Humedad("3", 30, LocalDateTime.now().minusHours(2)));
-        hum3.add(new Humedad("3", 27, LocalDateTime.now()));
-        carnivora.setHumedad(hum3);
+        List<HumedadSuelo> humS3 = new ArrayList<>();
+        humS3.add(new HumedadSuelo("3", 30, LocalDateTime.now().minusHours(2)));
+        humS3.add(new HumedadSuelo("3", 27, LocalDateTime.now()));
+        carnivora.setHumedadesSuelo(humS3);
+
+        List<HumedadAmbiental> humA3 = new ArrayList<>();
+        humA3.add(new HumedadAmbiental("3", 45, LocalDateTime.now().minusHours(2)));
+        humA3.add(new HumedadAmbiental("3", 50, LocalDateTime.now()));
+        carnivora.setHumedadesAmbientales(humA3);
 
         listaPlantas.add(carnivora);
     }
@@ -177,15 +195,26 @@ public class ecoAvance_activity extends AppCompatActivity {
     public void actualizarDashboard(Planta planta){
         txtNombrePlanta.setText(planta.getNombre());
 
-        double temp = planta.getTemperaturas().get(planta.getTemperaturas().size()-1).getValor();
-        double humSuelo= planta.getHumedad().get(planta.getHumedad().size()-1).getValor();
-        double humAmb = planta.getParametros().getRangoHumedadAmbiental().getMaximo();
+        // Última temperatura
+        double temp = planta.getTemperaturas()
+                .get(planta.getTemperaturas().size() - 1)
+                .getValor();
+
+        // Última humedad del suelo
+        double humSuelo = planta.getHumedadesSuelo()
+                .get(planta.getHumedadesSuelo().size() - 1)
+                .getValor();
+
+        // Última humedad ambiental
+        double humAmb = planta.getHumedadesAmbientales()
+                .get(planta.getHumedadesAmbientales().size() - 1)
+                .getValor();
 
         txtTemperatura.setText(temp + " °C");
         txtHumedadSuelo.setText(humSuelo + " %");
         txtHumedadAmbiental.setText(humAmb + " %");
 
-        //actualizar la imagen del dashboard
+        // Actualización gráfica
         int ancho = chartView.getWidth();
         int alto = chartView.getHeight();
         if (ancho == 0 || alto == 0) return;
@@ -199,9 +228,9 @@ public class ecoAvance_activity extends AppCompatActivity {
         paint.setColor(Color.BLACK);
 
         canvas.drawColor(Color.parseColor("#E0F2F1"));
-        canvas.drawText("Temperatura" + temp + " °C", 50 ,80, paint);
-        canvas.drawText("Humedad del Suelo" + humSuelo + " %", 50 ,150, paint);
-        canvas.drawText("Humedad Ambiental" + humAmb + " %", 50 ,220, paint);
+        canvas.drawText("Temperatura: " + temp + " °C", 50, 80, paint);
+        canvas.drawText("Humedad del Suelo: " + humSuelo + " %", 50, 150, paint);
+        canvas.drawText("Humedad Ambiental: " + humAmb + " %", 50, 220, paint);
 
         chartView.setImageBitmap(bitmap);
     }

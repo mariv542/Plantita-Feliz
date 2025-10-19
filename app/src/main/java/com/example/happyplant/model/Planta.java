@@ -7,58 +7,52 @@ public class Planta {
     private String nombre;
     private Parametros parametros;
     private List<Temperatura> temperaturas;
-    private List<Humedad> humedad;
-    private List<NivelAgua> nivelAguas;
-    private List<Consumo> consumos;
-    private List<EstadoActuador> actuadores;
+    private List<HumedadSuelo> humedadesSuelo;
+    private List<HumedadAmbiental> humedadesAmbientales;
+    private List<NivelAgua> nivelesAgua;
     private List<Alerta> alertas;
-
     public Planta (){}
-    public Planta (String id, String nombre, Parametros parametros,
-                   List<Temperatura> temperaturas,
-                   List<Humedad> humedad,
-                   List<NivelAgua> nivelAguas,
-                   List<Consumo> consumos,
-                   List<EstadoActuador> actuadores,
-                   List<Alerta> alertas){
+    public Planta(String id,
+                  String nombre,
+                  Parametros parametros,
+                  List<Temperatura> temperaturas,
+                  List<HumedadSuelo> humedadesSuelo,
+                  List<HumedadAmbiental> humedadesAmbientales,
+                  List<NivelAgua> nivelesAgua,
+                  List<Alerta> alertas) {
         this.id = id;
         this.nombre = nombre;
         this.parametros = parametros;
         this.temperaturas = temperaturas;
-        this.humedad = humedad;
-        this.nivelAguas = nivelAguas;
-        this.consumos =  consumos;
-        this.actuadores = actuadores;
+        this.humedadesSuelo = humedadesSuelo;
+        this.humedadesAmbientales = humedadesAmbientales;
+        this.nivelesAgua = nivelesAgua;
         this.alertas = alertas;
-
     }
 
     //getters y setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
-    //nombre
-    public String getNombre() {return  nombre; }
+
+    public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
-    //parametros
-    public Parametros getParametros() { return parametros;}
-    public void setParametros ( Parametros parametros) { this.parametros = parametros; }
-    //Temperatura
+
+    public Parametros getParametros() { return parametros; }
+    public void setParametros(Parametros parametros) { this.parametros = parametros; }
+
     public List<Temperatura> getTemperaturas() { return temperaturas; }
     public void setTemperaturas(List<Temperatura> temperaturas) { this.temperaturas = temperaturas; }
-    //Humedad
-    public List<Humedad> getHumedad() {return humedad; }
-    public void setHumedad(List<Humedad> humedad) { this.humedad = humedad; }
-    //NivelAgua
-    public List<NivelAgua> getNivelAguas() {return nivelAguas; }
-    public void setNivelAguas(List<NivelAgua> nivelAgua) { this.nivelAguas = nivelAguas; }
-    //Consumo
-    public List<Consumo> getConsumos(){ return consumos;}
-    public void setConsumos(List<Consumo> consumos) { this.consumos = consumos; }
-    //EstadoActuador
-    public List<EstadoActuador> getActuadores(){ return actuadores;}
-    public void setActuadores(List<EstadoActuador> actuadores) { this.actuadores = actuadores; }
-    //Alerta
-    public List<Alerta> getAlertas(){ return alertas;}
+
+    public List<HumedadSuelo> getHumedadesSuelo() { return humedadesSuelo; }
+    public void setHumedadesSuelo(List<HumedadSuelo> humedadesSuelo) { this.humedadesSuelo = humedadesSuelo; }
+
+    public List<HumedadAmbiental> getHumedadesAmbientales() { return humedadesAmbientales; }
+    public void setHumedadesAmbientales(List<HumedadAmbiental> humedadesAmbientales) { this.humedadesAmbientales = humedadesAmbientales; }
+
+    public List<NivelAgua> getNivelesAgua() { return nivelesAgua; }
+    public void setNivelesAgua(List<NivelAgua> nivelesAgua) { this.nivelesAgua = nivelesAgua; }
+
+    public List<Alerta> getAlertas() { return alertas; }
     public void setAlertas(List<Alerta> alertas) { this.alertas = alertas; }
 
 

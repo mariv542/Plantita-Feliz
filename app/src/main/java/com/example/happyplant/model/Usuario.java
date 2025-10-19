@@ -7,15 +7,16 @@ public class Usuario {
     private String nombre;
     private String email;
     private String passwordHash;
-    private List<Planta> plantasIds;
+    private List<Planta> plantasId;
 
     public Usuario () {}
 
-    public Usuario (String id, String nombre, String email, String passwordHash ) {
+    public Usuario (String id, String nombre, String email, String passwordHash, List<Planta> plantaList ) {
         this.id = id ;
         this.nombre = nombre;
         this.email = email;
         this.passwordHash = passwordHash;
+        this.plantasId = plantaList;
     }
 
 
@@ -31,7 +32,7 @@ public class Usuario {
 
     public String getPasswordHash(){return passwordHash;}
     public void setPasswordHash(String passwordHash){this.passwordHash = passwordHash;}
-
-
+    public List<Planta> getPlantasId() {return plantasId;}
+    public void setPlantasId(List<Planta> plantasId) {this.plantasId = plantasId;}
 
 }
