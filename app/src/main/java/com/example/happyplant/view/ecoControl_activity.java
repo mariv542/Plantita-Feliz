@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ public class ecoControl_activity extends AppCompatActivity {
     private GPSHelper gpsHelper;
     private Spinner spinnerPlantas;
     private UsuarioRepository usuarioRepo;
+    private Button btnSave;
     private Usuario usuarioLogueado;
     private RangeSlider sliderWater, sliderHumidity, sliderTemperature;
     @Override
@@ -74,6 +76,13 @@ public class ecoControl_activity extends AppCompatActivity {
 
         //carga el usuario logeado
         cargarUsuarioLogueado();
+
+        // Detectar cambios en los sliders para actualizar texto en tiempo real
+        configurarListenersDeSliders();
+
+        // Botón guardar
+        btnSave = findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(v -> guardarCambios());
         //+--------------------------------------------------------------------------------------------+
 
         btnEcoControl_regresar.setOnClickListener(v -> {
@@ -124,9 +133,14 @@ public class ecoControl_activity extends AppCompatActivity {
             return;
         }
 
-        List<Planta> listaPlantas = new ArrayList<>(usuarioLogueado.getPlantas().values());
+        List<Planta> listaPlantas = new ArrayList<>();
         List<String> nombresPlantas = new ArrayList<>();
-        for (Planta planta : listaPlantas) {
+
+        // Recorremos el Map de plantas (key = id de Firebase, value = Planta)
+        for (Map.Entry<String, Planta> entry : usuarioLogueado.getPlantas().entrySet()) {
+            Planta planta = entry.getValue();
+            planta.setId(entry.getKey()); // <-- Asignamos el id de Firebase a la planta
+            listaPlantas.add(planta);
             nombresPlantas.add(planta.getNombre());
         }
 
@@ -183,5 +197,65 @@ public class ecoControl_activity extends AppCompatActivity {
             labelTemperatureRange.setText("Min: " + min + "°C   -   Max: " + max + "°C");
         }
     }
+
+    private void configurarListenersDeSliders() {
+        sliderWater.addOnChangeListener((slider, value, fromUser) -> {
+            List<Float> vals = slider.getValues();
+            labelWaterRange.setText("Min: " + vals.get(0) + " ml   -   Max: " + vals.get(1) + " ml");
+        });
+
+        sliderHumidity.addOnChangeListener((slider, value, fromUser) -> {
+            List<Float> vals = slider.getValues();
+            labelHumidityRange.setText("Min: " + vals.get(0) + "%   -   Max: " + vals.get(1) + "%");
+        });
+
+        sliderTemperature.addOnChangeListener((slider, value, fromUser) -> {
+            List<Float> vals = slider.getValues();
+            labelTemperatureRange.setText("Min: " + vals.get(0) + "°C   -   Max: " + vals.get(1) + "°C");
+        });
+    }
+
+    private void guardarCambios() {
+        int pos = spinnerPlantas.getSelectedItemPosition();
+        if (usuarioLogueado == null || usuarioLogueado.getPlantas() == null) {
+            Toast.makeText(this, "No hay plantas para actualizar", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        List<Planta> listaPlantas = new ArrayList<>(usuarioLogueado.getPlantas().values());
+        Planta plantaSeleccionada = listaPlantas.get(pos);
+
+        if (usuarioLogueado.getId() == null) {
+            Toast.makeText(this, "Error: el ID del usuario es nulo", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (plantaSeleccionada.getId() == null) {
+            Toast.makeText(this, "Error: el ID de la planta es nulo", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        List<Float> agua = sliderWater.getValues();
+        List<Float> humedad = sliderHumidity.getValues();
+        List<Float> temp = sliderTemperature.getValues();
+
+        plantaSeleccionada.getParametros().getRangoNivelAgua().setMinimo(agua.get(0));
+        plantaSeleccionada.getParametros().getRangoNivelAgua().setMaximo(agua.get(1));
+        plantaSeleccionada.getParametros().getRangoHumedadSuelo().setMinimo(humedad.get(0));
+        plantaSeleccionada.getParametros().getRangoHumedadSuelo().setMaximo(humedad.get(1));
+        plantaSeleccionada.getParametros().getRangoTemperatura().setMinimo(temp.get(0));
+        plantaSeleccionada.getParametros().getRangoTemperatura().setMaximo(temp.get(1));
+
+        usuarioRepo.getReference("usuarios")
+                .child(usuarioLogueado.getId())
+                .child("plantas")
+                .child(plantaSeleccionada.getId())
+                .setValue(plantaSeleccionada)
+                .addOnSuccessListener(aVoid ->
+                        Toast.makeText(this, "Parámetros actualizados correctamente", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Error al guardar: " + e.getMessage(), Toast.LENGTH_LONG).show());
+    }
+
 
 }
