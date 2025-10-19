@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 public class NivelAgua {
     private String plantaId;
     private double litros;
-    private LocalDateTime fechaHora;
+    private String fechaHora;
 
     public NivelAgua (){}
-    public NivelAgua(String plantaId, double litros, LocalDateTime fechaHora){
+    public NivelAgua(String plantaId, double litros, String fechaHora){
         this.plantaId = plantaId;
         this.litros = litros;
         this.fechaHora = fechaHora;
@@ -19,6 +19,6 @@ public class NivelAgua {
 
     public double getLitros(){ return litros;}
     public void setLitros(double litros){this.litros = litros;}
-    public LocalDateTime getFechaHora(){return fechaHora;}
-    public void setFechaHora(LocalDateTime fechaHora) { this.fechaHora = fechaHora;}
+    public String getFechaHora(){return fechaHora;}
+    public void setFechaHora(String fechaHora) { this.fechaHora = fechaHora;}
 }

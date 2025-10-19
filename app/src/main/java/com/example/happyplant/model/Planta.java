@@ -1,25 +1,26 @@
 package com.example.happyplant.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class Planta {
     private String id;
     private String nombre;
     private Parametros parametros;
-    private List<Temperatura> temperaturas;
-    private List<HumedadSuelo> humedadesSuelo;
-    private List<HumedadAmbiental> humedadesAmbientales;
-    private List<NivelAgua> nivelesAgua;
-    private List<Alerta> alertas;
+    private Map<String, Temperatura> temperaturas;
+    private Map<String, HumedadSuelo> humedadesSuelo;
+    private Map<String, HumedadAmbiental> humedadesAmbientales;
+    private Map<String, NivelAgua> nivelesAgua;
+    private Map<String, Alerta> alertas;
     public Planta (){}
     public Planta(String id,
                   String nombre,
                   Parametros parametros,
-                  List<Temperatura> temperaturas,
-                  List<HumedadSuelo> humedadesSuelo,
-                  List<HumedadAmbiental> humedadesAmbientales,
-                  List<NivelAgua> nivelesAgua,
-                  List<Alerta> alertas) {
+                  Map<String, Temperatura> temperaturas,
+                  Map<String, HumedadSuelo> humedadesSuelo,
+                  Map<String, HumedadAmbiental> humedadesAmbientales,
+                  Map<String, NivelAgua> nivelesAgua,
+                  Map<String, Alerta> alertas) {
         this.id = id;
         this.nombre = nombre;
         this.parametros = parametros;
@@ -40,20 +41,20 @@ public class Planta {
     public Parametros getParametros() { return parametros; }
     public void setParametros(Parametros parametros) { this.parametros = parametros; }
 
-    public List<Temperatura> getTemperaturas() { return temperaturas; }
-    public void setTemperaturas(List<Temperatura> temperaturas) { this.temperaturas = temperaturas; }
+    public Map<String, Temperatura> getTemperaturas() { return temperaturas; }
+    public void setTemperaturas(Map<String, Temperatura> temperaturas) { this.temperaturas = temperaturas; }
 
-    public List<HumedadSuelo> getHumedadesSuelo() { return humedadesSuelo; }
-    public void setHumedadesSuelo(List<HumedadSuelo> humedadesSuelo) { this.humedadesSuelo = humedadesSuelo; }
+    public Map<String, HumedadSuelo> getHumedadesSuelo() { return humedadesSuelo; }
+    public void setHumedadesSuelo(Map<String, HumedadSuelo> humedadesSuelo) { this.humedadesSuelo = humedadesSuelo; }
 
-    public List<HumedadAmbiental> getHumedadesAmbientales() { return humedadesAmbientales; }
-    public void setHumedadesAmbientales(List<HumedadAmbiental> humedadesAmbientales) { this.humedadesAmbientales = humedadesAmbientales; }
+    public Map<String, HumedadAmbiental> getHumedadesAmbientales() { return humedadesAmbientales; }
+    public void setHumedadesAmbientales(Map<String, HumedadAmbiental> humedadesAmbientales) { this.humedadesAmbientales = humedadesAmbientales; }
 
-    public List<NivelAgua> getNivelesAgua() { return nivelesAgua; }
-    public void setNivelesAgua(List<NivelAgua> nivelesAgua) { this.nivelesAgua = nivelesAgua; }
+    public Map<String, NivelAgua> getNivelesAgua() { return nivelesAgua; }
+    public void setNivelesAgua(Map<String, NivelAgua> nivelesAgua) { this.nivelesAgua = nivelesAgua; }
 
-    public List<Alerta> getAlertas() { return alertas; }
-    public void setAlertas(List<Alerta> alertas) { this.alertas = alertas; }
+    public Map<String, Alerta> getAlertas() { return alertas; }
+    public void setAlertas(Map<String, Alerta> alertas) { this.alertas = alertas; }
 
 
 

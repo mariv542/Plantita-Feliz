@@ -10,9 +10,9 @@ public class PlantaRepository extends FirebaseRepository{
 
     private final DatabaseReference plantasRef;
 
-    public PlantaRepository() {
+    public PlantaRepository(String userId) {
         super();
-        plantasRef = getReference("plantas");
+        plantasRef = getReference("usuarios/" + userId + "/plantas");
     }
 
     public void guardarPlanta(Planta planta) {

@@ -75,7 +75,7 @@ public class ecoAvance_activity extends AppCompatActivity {
         });
 
         //cargar lista de plantas
-        cargarPlantasSimuladas();
+        //cargarPlantasSimuladas();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_dropdown_item, obtenerNombresPLantas(listaPlantas));
@@ -103,94 +103,94 @@ public class ecoAvance_activity extends AppCompatActivity {
         }
         return nombre;
     }
-    private void cargarPlantasSimuladas(){
-        //planta 1
-        Planta cactus = new Planta();
-        cactus.setId("1");
-        cactus.setNombre("Cactus");
-
-        Parametros p1 = new Parametros();
-        p1.setRangoHumedadSuelo(new Rango("r1", 10, 40));
-        p1.setRangoTemperatura(new Rango("r2", 20, 30));
-        p1.setRangoHumedadAmbiental(new Rango("r3", 30, 50));
-        p1.setRangoNivelAgua(new Rango("r4", 0, 5));
-        cactus.setParametros(p1);
-
-        // Temperaturas
-        List<Temperatura> temps1 = new ArrayList<>();
-        temps1.add(new Temperatura("1", 28, LocalDateTime.now().minusHours(2)));
-        temps1.add(new Temperatura("1", 30, LocalDateTime.now()));
-        cactus.setTemperaturas(temps1);
-
-        // Humedad de suelo
-        List<HumedadSuelo> humS1 = new ArrayList<>();
-        humS1.add(new HumedadSuelo("1", 35, LocalDateTime.now().minusHours(2)));
-        humS1.add(new HumedadSuelo("1", 32, LocalDateTime.now()));
-        cactus.setHumedadesSuelo(humS1);
-
-        // Humedad ambiental
-        List<HumedadAmbiental> humA1 = new ArrayList<>();
-        humA1.add(new HumedadAmbiental("1", 40, LocalDateTime.now().minusHours(2)));
-        humA1.add(new HumedadAmbiental("1", 45, LocalDateTime.now()));
-        cactus.setHumedadesAmbientales(humA1);
-
-        listaPlantas.add(cactus);
-
-        // Planta 2
-        Planta helecho = new Planta();
-        helecho.setId("2");
-        helecho.setNombre("Helecho");
-
-        Parametros p2 = new Parametros();
-        p2.setRangoHumedadSuelo(new Rango("r5", 40, 70));
-        p2.setRangoTemperatura(new Rango("r6", 18, 25));
-        p2.setRangoHumedadAmbiental(new Rango("r7", 60, 80));
-        p2.setRangoNivelAgua(new Rango("r8", 1, 6));
-        helecho.setParametros(p2);
-
-        List<Temperatura> temps2 = new ArrayList<>();
-        temps2.add(new Temperatura("2", 22, LocalDateTime.now()));
-        helecho.setTemperaturas(temps2);
-
-        List<HumedadSuelo> humS2 = new ArrayList<>();
-        humS2.add(new HumedadSuelo("2", 65, LocalDateTime.now()));
-        helecho.setHumedadesSuelo(humS2);
-
-        List<HumedadAmbiental> humA2 = new ArrayList<>();
-        humA2.add(new HumedadAmbiental("2", 70, LocalDateTime.now()));
-        helecho.setHumedadesAmbientales(humA2);
-
-        listaPlantas.add(helecho);
-
-        // Planta 3
-        Planta carnivora = new Planta();
-        carnivora.setId("3");
-        carnivora.setNombre("Carnívora");
-
-        Parametros p3 = new Parametros();
-        p3.setRangoHumedadSuelo(new Rango("r9", 25, 47));
-        p3.setRangoTemperatura(new Rango("r10", 36, 50));
-        p3.setRangoHumedadAmbiental(new Rango("r11", 34, 56));
-        p3.setRangoNivelAgua(new Rango("r12", 3, 10));
-        carnivora.setParametros(p3);
-
-        List<Temperatura> temps3 = new ArrayList<>();
-        temps3.add(new Temperatura("3", 50, LocalDateTime.now().minusHours(2)));
-        temps3.add(new Temperatura("3", 40, LocalDateTime.now()));
-        carnivora.setTemperaturas(temps3);
-
-        List<HumedadSuelo> humS3 = new ArrayList<>();
-        humS3.add(new HumedadSuelo("3", 30, LocalDateTime.now().minusHours(2)));
-        humS3.add(new HumedadSuelo("3", 27, LocalDateTime.now()));
-        carnivora.setHumedadesSuelo(humS3);
-
-        List<HumedadAmbiental> humA3 = new ArrayList<>();
-        humA3.add(new HumedadAmbiental("3", 45, LocalDateTime.now().minusHours(2)));
-        humA3.add(new HumedadAmbiental("3", 50, LocalDateTime.now()));
-        carnivora.setHumedadesAmbientales(humA3);
-
-        listaPlantas.add(carnivora);
-    }
+//    private void cargarPlantasSimuladas(){
+//        //planta 1
+//        Planta cactus = new Planta();
+//        cactus.setId("1");
+//        cactus.setNombre("Cactus");
+//
+//        Parametros p1 = new Parametros();
+//        p1.setRangoHumedadSuelo(new Rango("r1", 10, 40));
+//        p1.setRangoTemperatura(new Rango("r2", 20, 30));
+//        p1.setRangoHumedadAmbiental(new Rango("r3", 30, 50));
+//        p1.setRangoNivelAgua(new Rango("r4", 0, 5));
+//        cactus.setParametros(p1);
+//
+//        // Temperaturas
+//        List<Temperatura> temps1 = new ArrayList<>();
+//        temps1.add(new Temperatura("1", 28, LocalDateTime.now().minusHours(2)));
+//        temps1.add(new Temperatura("1", 30, LocalDateTime.now()));
+//        cactus.setTemperaturas(temps1);
+//
+//        // Humedad de suelo
+//        List<HumedadSuelo> humS1 = new ArrayList<>();
+//        humS1.add(new HumedadSuelo("1", 35, LocalDateTime.now().minusHours(2)));
+//        humS1.add(new HumedadSuelo("1", 32, LocalDateTime.now()));
+//        cactus.setHumedadesSuelo(humS1);
+//
+//        // Humedad ambiental
+//        List<HumedadAmbiental> humA1 = new ArrayList<>();
+//        humA1.add(new HumedadAmbiental("1", 40, LocalDateTime.now().minusHours(2)));
+//        humA1.add(new HumedadAmbiental("1", 45, LocalDateTime.now()));
+//        cactus.setHumedadesAmbientales(humA1);
+//
+//        listaPlantas.add(cactus);
+//
+//        // Planta 2
+//        Planta helecho = new Planta();
+//        helecho.setId("2");
+//        helecho.setNombre("Helecho");
+//
+//        Parametros p2 = new Parametros();
+//        p2.setRangoHumedadSuelo(new Rango("r5", 40, 70));
+//        p2.setRangoTemperatura(new Rango("r6", 18, 25));
+//        p2.setRangoHumedadAmbiental(new Rango("r7", 60, 80));
+//        p2.setRangoNivelAgua(new Rango("r8", 1, 6));
+//        helecho.setParametros(p2);
+//
+//        List<Temperatura> temps2 = new ArrayList<>();
+//        temps2.add(new Temperatura("2", 22, LocalDateTime.now()));
+//        helecho.setTemperaturas(temps2);
+//
+//        List<HumedadSuelo> humS2 = new ArrayList<>();
+//        humS2.add(new HumedadSuelo("2", 65, LocalDateTime.now()));
+//        helecho.setHumedadesSuelo(humS2);
+//
+//        List<HumedadAmbiental> humA2 = new ArrayList<>();
+//        humA2.add(new HumedadAmbiental("2", 70, LocalDateTime.now()));
+//        helecho.setHumedadesAmbientales(humA2);
+//
+//        listaPlantas.add(helecho);
+//
+//        // Planta 3
+//        Planta carnivora = new Planta();
+//        carnivora.setId("3");
+//        carnivora.setNombre("Carnívora");
+//
+//        Parametros p3 = new Parametros();
+//        p3.setRangoHumedadSuelo(new Rango("r9", 25, 47));
+//        p3.setRangoTemperatura(new Rango("r10", 36, 50));
+//        p3.setRangoHumedadAmbiental(new Rango("r11", 34, 56));
+//        p3.setRangoNivelAgua(new Rango("r12", 3, 10));
+//        carnivora.setParametros(p3);
+//
+//        List<Temperatura> temps3 = new ArrayList<>();
+//        temps3.add(new Temperatura("3", 50, LocalDateTime.now().minusHours(2)));
+//        temps3.add(new Temperatura("3", 40, LocalDateTime.now()));
+//        carnivora.setTemperaturas(temps3);
+//
+//        List<HumedadSuelo> humS3 = new ArrayList<>();
+//        humS3.add(new HumedadSuelo("3", 30, LocalDateTime.now().minusHours(2)));
+//        humS3.add(new HumedadSuelo("3", 27, LocalDateTime.now()));
+//        carnivora.setHumedadesSuelo(humS3);
+//
+//        List<HumedadAmbiental> humA3 = new ArrayList<>();
+//        humA3.add(new HumedadAmbiental("3", 45, LocalDateTime.now().minusHours(2)));
+//        humA3.add(new HumedadAmbiental("3", 50, LocalDateTime.now()));
+//        carnivora.setHumedadesAmbientales(humA3);
+//
+//        listaPlantas.add(carnivora);
+//    }
 
     public void actualizarDashboard(Planta planta){
         txtNombrePlanta.setText(planta.getNombre());

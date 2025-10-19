@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/eco_control"
     android:layout_width="match_parent"
@@ -19,7 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Botón atrás -->
         <ImageButton
             android:id="@+id/btn_ecoControl_regresar"
             android:layout_width="56dp"
@@ -30,8 +30,6 @@
             android:scaleType="centerInside"
             android:contentDescription="@string/desc_btn_back"/>
 
-
-        <!-- Título -->
         <TextView
             android:id="@+id/titleEcoControl"
             android:layout_width="wrap_content"
@@ -57,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@id/topBar"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Campo de entrada -->
+    <!-- Spinner para seleccionar planta -->
     <LinearLayout
         android:id="@+id/inputContainer"
         android:layout_width="0dp"
@@ -76,15 +74,11 @@
             android:layout_height="32dp"
             android:src="@drawable/icon_plant"/>
 
-        <EditText
-            android:id="@+id/editPlantName"
+        <Spinner
+            android:id="@+id/spinnerPlantas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:hint="Ingresa un nombre..."
-            android:background="@android:color/transparent"
-            android:textSize="16sp"
-            android:inputType="textPersonName"/>
+            android:layout_marginStart="12dp"/>
     </LinearLayout>
 
     <!-- Sliders -->
@@ -105,16 +99,20 @@
             android:text="Cantidad de agua"
             android:textStyle="bold"
             android:textColor="@android:color/black"/>
-        <SeekBar
-            android:id="@+id/seekWater"
+
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/sliderWater"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="30"
-            android:progress="20"/>
+            android:valueFrom="0"
+            android:valueTo="10"
+            android:stepSize="0.1"/>
+
         <TextView
+            android:id="@+id/labelWaterRange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="10          20          30 ml"
+            android:text="Min - Max ml"
             android:textSize="12sp"
             android:textColor="@android:color/darker_gray"
             android:gravity="center"/>
@@ -127,16 +125,20 @@
             android:layout_marginTop="16dp"
             android:textStyle="bold"
             android:textColor="@android:color/black"/>
-        <SeekBar
-            android:id="@+id/seekHumidity"
+
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/sliderHumidity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="100"
-            android:progress="50"/>
+            android:valueFrom="0"
+            android:valueTo="100"
+            android:stepSize="1"/>
+
         <TextView
+            android:id="@+id/labelHumidityRange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0              50              100 %"
+            android:text="Min - Max %"
             android:textSize="12sp"
             android:textColor="@android:color/darker_gray"
             android:gravity="center"/>
@@ -149,16 +151,20 @@
             android:layout_marginTop="16dp"
             android:textStyle="bold"
             android:textColor="@android:color/black"/>
-        <SeekBar
-            android:id="@+id/seekTemperature"
+
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/sliderTemperature"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="30"
-            android:progress="20"/>
+            android:valueFrom="0"
+            android:valueTo="50"
+            android:stepSize="0.5"/>
+
         <TextView
+            android:id="@+id/labelTemperatureRange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="10          20          30 ºC"
+            android:text="Min - Max ºC"
             android:textSize="12sp"
             android:textColor="@android:color/darker_gray"
             android:gravity="center"/>

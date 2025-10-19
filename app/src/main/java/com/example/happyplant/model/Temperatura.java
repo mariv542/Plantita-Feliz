@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 public class Temperatura {
     private String plantId;
     private double valor;
-    private LocalDateTime fechaHora;
+    private String fechaHora;
 
     public Temperatura (){}
-    public Temperatura (String plantId, double valor, LocalDateTime fechaHora){
+    public Temperatura (String plantId, double valor, String fechaHora){
         this.plantId = plantId;
         this.valor = valor;
         this.fechaHora = fechaHora;
@@ -21,7 +21,7 @@ public class Temperatura {
     public double getValor() { return  valor; }
     public void getValor(double valor) { this.valor = valor; }
 
-    public LocalDateTime getFechaHora() { return fechaHora; }
-    public void setFechaHora(LocalDateTime fechaHora) { this.fechaHora = fechaHora; }
+    public String getFechaHora() { return fechaHora; }
+    public void setFechaHora(String fechaHora) { this.fechaHora = fechaHora; }
 
 }
