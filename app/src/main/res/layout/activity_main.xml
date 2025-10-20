@@ -13,7 +13,7 @@
         android:id="@+id/imageView8"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:foreground="#50FFFFFF"
+        android:foreground="@color/overlay"
         android:scaleType="centerCrop"
         android:src="@drawable/icon_brocolis" />
 

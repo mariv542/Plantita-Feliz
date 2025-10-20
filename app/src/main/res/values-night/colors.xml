@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- VERDES -->
+    <color name="green">#092E0B</color>         <!-- Botones principales y acentos -->
+    <color name="dark_green">#005C0C</color>    <!-- TopBar, iconos destacados -->
+
+    <!-- GRISES -->
+    <color name="gray">#8E9389</color>          <!-- Textos secundarios -->
+    <color name="light_gray">#2D3B2D</color>    <!-- Fondos de cards claros en dark mode -->
+    <color name="dark_gray">#8E9389</color>     <!-- Textos de menor jerarquía -->
+    <color name="darker_gray">#2D3B2D</color>   <!-- Bordes y sombras suaves -->
+
+    <!-- TEXTOS -->
+    <color name="black">#FFFFFF</color>         <!-- Texto principal sobre fondos oscuros -->
+    <color name="white">#83AC83</color>         <!-- Fondo general dark mode -->
+
+    <!-- TEXTOS ESPECÍFICOS -->
+    <color name="title_text">#FFFFFF</color>
+    <color name="subtitle_text">#8E9389</color>
+    <color name="link_text">#005C0C</color>
+    <color name="button_text">#FFFFFF</color>
+
+    <!-- OTROS COLORES -->
+    <color name="lime_green">#145200</color>
+    <color name="blue">#64B5F6</color>
+    <color name="teal_200">#4DD0E1</color>
+    <color name="red">#EF9A9A</color>
+
+    <!-- OVERLAY -->
+    <color name="overlay">#50000000</color>
+
+    <!-- FONDO PRINCIPAL -->
+    <color name="background_main"> #7D807C </color> <!-- Fondo oscuro general -->
+</resources>
