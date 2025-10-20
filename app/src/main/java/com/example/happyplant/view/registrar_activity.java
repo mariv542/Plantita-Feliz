@@ -14,10 +14,14 @@ import com.example.happyplant.R;
 import com.example.happyplant.utils.GPSHelper;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.example.happyplant.model.Usuario;
+import com.example.happyplant.repository.UsuarioRepository;
+
 
 public class registrar_activity extends AppCompatActivity {
 
     private TextInputEditText etEmail, etPass, etConfirmPass;
+    private UsuarioRepository usuarioRepo;
     private Button btnRegister;
     private TextView txtLogin, txtGPS;
     private FirebaseAuth auth;
@@ -30,6 +34,7 @@ public class registrar_activity extends AppCompatActivity {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.registrar_usuario);
 
+        usuarioRepo = new UsuarioRepository();
         //+--------------------------------------------------------------------------------------------+
         //Boton para regresar a Login
         btnRegistrar_regresar = findViewById(R.id.btn_registrar_regresar);
@@ -75,14 +80,22 @@ public class registrar_activity extends AppCompatActivity {
 
         if (!validar(email, pass, confirmPass)) return;
 
-        auth.createUserWithEmailAndPassword(email, pass)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(this, login_activity.class));
+        // Nombre por defecto
+        String nombreDefault = "Usuario";
+
+        // Llamada al repository con callback
+        usuarioRepo.registrarUsuarioConAuth(nombreDefault, email, pass,
+                new UsuarioRepository.RegistroCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(registrar_activity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(registrar_activity.this, login_activity.class));
                         finish();
-                    } else {
-                        Toast.makeText(this, "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        Toast.makeText(registrar_activity.this, "Error: " + error, Toast.LENGTH_LONG).show();
                     }
                 });
     }
