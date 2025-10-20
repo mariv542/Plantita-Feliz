@@ -34,7 +34,7 @@
         <activity android:name=".view.ecoControl_activity" />
         <activity android:name=".view.ecoPlanta_activity" />
         <activity android:name=".view.registrar_activity" />
-
+        <activity android:name=".view.ecoUsuario_activity" />
     </application>
 
 </manifest>
