@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.happyplant.R;
+import com.example.happyplant.utils.GPSHelper;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -24,6 +25,9 @@ import java.util.Map;
 public class ecoUsuario_activity extends AppCompatActivity {
 
     //+-------------------------------------------------------------------------------------------+
+    // para GPS
+    private TextView txtGPS;
+    private GPSHelper gpsHelper;
     private ImageButton btnUsuario_regresar;
     private TextInputEditText editNombre, editPassword;
     private TextInputEditText editPasswordActual;
@@ -61,6 +65,14 @@ public class ecoUsuario_activity extends AppCompatActivity {
             startActivity(intent);
             // para serrar la pestaña dde login y que no vuelva atras dar finish:
             // finish();
+        });
+        //Para GPS
+        txtGPS = findViewById(R.id.txtGPS);
+
+        gpsHelper = new GPSHelper(this);
+        gpsHelper.obtenerUbicacion((lat, lon) -> {
+            String ciudad = gpsHelper.obtenerCiudad(lat, lon, this);
+            txtGPS.setText("Ciudad: " + ciudad);
         });
     }
 

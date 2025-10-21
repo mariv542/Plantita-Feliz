@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class perfil_activity extends AppCompatActivity {
 
     private FirebaseAuth auth;
-    private MaterialCardView card_InformacionPersonal;
+    private MaterialCardView card_InformacionPersonal, card_dispositivos;
     private MaterialCardView card_logout;
     private ImageButton btnPerfil_regresar;
     private TextView txtGPS;
@@ -39,6 +39,7 @@ public class perfil_activity extends AppCompatActivity {
 
         // card informacion personal
         card_InformacionPersonal = findViewById(R.id.card_perfil_informacionPersonal);
+        card_dispositivos = findViewById(R.id.cardDispositivos);
 
         // card log out
         card_logout = findViewById(R.id.card_perfil_Salir);
@@ -55,6 +56,11 @@ public class perfil_activity extends AppCompatActivity {
 
         card_InformacionPersonal.setOnClickListener(v -> {
             Intent intent = new Intent(perfil_activity.this, ecoUsuario_activity.class);
+            startActivity(intent);
+        });
+
+        card_dispositivos.setOnClickListener(v -> {
+            Intent intent = new Intent(perfil_activity.this, dispositivos_activity.class);
             startActivity(intent);
         });
 
