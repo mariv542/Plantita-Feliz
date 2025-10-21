@@ -44,7 +44,7 @@
 
     <!-- Campo Nombre de la planta -->
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardNombrePlanta"
+        android:id="@+id/card_ecoPlanta_nombrePlanta"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -71,7 +71,7 @@
             <!--            android:background="@drawable/bg_circle_light_green"-->
 
             <EditText
-                android:id="@+id/etNombrePlanta"
+                android:id="@+id/et_ecoPlanta_nombrePlanta"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -84,14 +84,14 @@
 
     <!-- Campo ID de la maceta -->
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardIdMaceta"
+        android:id="@+id/card_ecoPlanta_idMaceta"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:layout_marginHorizontal="16dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="3dp"
-        app:layout_constraintTop_toBottomOf="@id/cardNombrePlanta"
+        app:layout_constraintTop_toBottomOf="@id/card_ecoPlanta_nombrePlanta"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -112,7 +112,7 @@
 
 
             <EditText
-                android:id="@+id/etIdMaceta"
+                android:id="@+id/et_ecoPlanta_idMaceta"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -125,7 +125,7 @@
 
     <!-- Botón Guardar -->
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnGuardar"
+        android:id="@+id/btn_ecoPlanta_guardar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -138,7 +138,7 @@
         app:iconGravity="textEnd"
         app:iconTint="@android:color/white"
         app:iconPadding="8dp"
-        app:layout_constraintTop_toBottomOf="@id/cardIdMaceta"
+        app:layout_constraintTop_toBottomOf="@id/card_ecoPlanta_idMaceta"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:backgroundTint="@color/dark_green"/>
