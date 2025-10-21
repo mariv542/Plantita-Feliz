@@ -275,7 +275,7 @@
 
     <!-- Card Salir -->
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardSalir"
+        android:id="@+id/card_perfil_Salir"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
