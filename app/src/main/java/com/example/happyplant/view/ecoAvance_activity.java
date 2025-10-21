@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,7 +14,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.happyplant.R;
@@ -23,21 +26,34 @@ import com.example.happyplant.model.Parametros;
 import com.example.happyplant.model.Planta;
 import com.example.happyplant.model.Rango;
 import com.example.happyplant.model.Temperatura;
+import com.example.happyplant.model.Usuario;
 import com.example.happyplant.utils.GPSHelper;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ecoAvance_activity extends AppCompatActivity {
     // para GPS
     private TextView txtGPS;
     private GPSHelper gpsHelper;
+    //UI
     private Spinner spinnerPlantas;
     private ImageView chartView;
     private TextView txtNombrePlanta, txtTemperatura, txtHumedadSuelo, txtHumedadAmbiental;
     private ImageButton btnEcoAvanceRegresar;
+    // Firebase
+    private Usuario usuarioLogueado;
 
     private List<Planta> listaPlantas = new ArrayList<>();
 
@@ -66,6 +82,11 @@ public class ecoAvance_activity extends AppCompatActivity {
 
         //+--------------------------------------------------------------------------------------------+
 
+
+        // Cargar datos del usuario logueado
+        cargarUsuarioLogueado();
+
+        //para boton de  regresar
         btnEcoAvanceRegresar.setOnClickListener(v -> {
             // Creamos un Intent para ir a menu_activity
             Intent intent = new Intent(ecoAvance_activity.this, menu_activity.class);
@@ -73,13 +94,109 @@ public class ecoAvance_activity extends AppCompatActivity {
             // para serrar la pestaña dde login y que no vuelva atras dar finish:
             // finish();
         });
+    }
 
-        //cargar lista de plantas
-        //cargarPlantasSimuladas();
+    //metodos
 
+    private void cargarUsuarioLogueado() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser == null) return;
+
+        String email = firebaseUser.getEmail(); // correo actual del usuario
+
+        // Referencia a usuarios en Firebase
+        DatabaseReference refUsuarios = FirebaseDatabase.getInstance().getReference("usuarios");
+        refUsuarios.orderByChild("email").equalTo(email)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            for (DataSnapshot userSnap : snapshot.getChildren()) {
+                                // Cargar datos del usuario
+                                usuarioLogueado = userSnap.getValue(Usuario.class);
+                                usuarioLogueado.setId(userSnap.getKey());
+                                Log.d("EcoAvance", "Usuario logueado: " + usuarioLogueado.getNombre());
+
+                                // Cargar sus plantas en la lista
+                                cargarPlantasUsuario(userSnap.child("plantas"));
+                            }
+                        } else {
+                            Toast.makeText(ecoAvance_activity.this,
+                                    "Usuario no encontrado en la base de datos",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("EcoAvance", "Error al consultar usuario", error.toException());
+                    }
+                });
+    }
+
+    // Obtener nombres de plantas para el spinner
+    private List<String> obtenerNombresPlantas(List<Planta> plantas) {
+        List<String> nombres = new ArrayList<>();
+        for (Planta p : plantas) {
+            nombres.add(p.getNombre() != null ? p.getNombre() : "Sin nombre");
+        }
+        return nombres;
+    }
+
+    private void cargarPlantasUsuario(DataSnapshot plantasSnapshot) {
+        listaPlantas.clear();
+
+        if (!plantasSnapshot.exists()) {
+            Toast.makeText(this, "No hay plantas para este usuario", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        for (DataSnapshot ds : plantasSnapshot.getChildren()) {
+            Planta planta = ds.getValue(Planta.class);
+            if (planta != null) {
+                planta.setId(ds.getKey());
+
+                // Cargar temperaturas como Map
+                if (ds.child("temperaturas").exists()) {
+                    Map<String, Temperatura> temps = new HashMap<>();
+                    for (DataSnapshot tempSnap : ds.child("temperaturas").getChildren()) {
+                        Temperatura t = tempSnap.getValue(Temperatura.class);
+                        if (t != null) temps.put(tempSnap.getKey(), t);
+                    }
+                    planta.setTemperaturas(temps);
+                }
+
+                // Cargar humedades de suelo
+                if (ds.child("humedadesSuelo").exists()) {
+                    Map<String, HumedadSuelo> humSueloMap = new HashMap<>();
+                    for (DataSnapshot humSnap : ds.child("humedadesSuelo").getChildren()) {
+                        HumedadSuelo h = humSnap.getValue(HumedadSuelo.class);
+                        if (h != null) humSueloMap.put(humSnap.getKey(), h);
+                    }
+                    planta.setHumedadesSuelo(humSueloMap);
+                }
+
+                // Cargar humedades ambientales
+                if (ds.child("humedadesAmbientales").exists()) {
+                    Map<String, HumedadAmbiental> humAmbMap = new HashMap<>();
+                    for (DataSnapshot humAmbSnap : ds.child("humedadesAmbientales").getChildren()) {
+                        HumedadAmbiental h = humAmbSnap.getValue(HumedadAmbiental.class);
+                        if (h != null) humAmbMap.put(humAmbSnap.getKey(), h);
+                    }
+                    planta.setHumedadesAmbientales(humAmbMap);
+                }
+
+                listaPlantas.add(planta);
+            }
+        }
+
+        // Llenar el spinner con los nombres de plantas
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_dropdown_item, obtenerNombresPLantas(listaPlantas));
-
+                this,
+                android.R.layout.simple_spinner_item,
+                obtenerNombresPlantas(listaPlantas)
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPlantas.setAdapter(adapter);
 
         spinnerPlantas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -90,131 +207,55 @@ public class ecoAvance_activity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
     }
 
-    //metodos
+    public void actualizarDashboard(Planta planta) {
+        if (planta == null) return;
 
-    private List<String> obtenerNombresPLantas(List<Planta> plantas){
-        List<String> nombre = new ArrayList<>();
-        for (Planta p : plantas){
-            nombre.add(p.getNombre());
-        }
-        return nombre;
-    }
-//    private void cargarPlantasSimuladas(){
-//        //planta 1
-//        Planta cactus = new Planta();
-//        cactus.setId("1");
-//        cactus.setNombre("Cactus");
-//
-//        Parametros p1 = new Parametros();
-//        p1.setRangoHumedadSuelo(new Rango("r1", 10, 40));
-//        p1.setRangoTemperatura(new Rango("r2", 20, 30));
-//        p1.setRangoHumedadAmbiental(new Rango("r3", 30, 50));
-//        p1.setRangoNivelAgua(new Rango("r4", 0, 5));
-//        cactus.setParametros(p1);
-//
-//        // Temperaturas
-//        List<Temperatura> temps1 = new ArrayList<>();
-//        temps1.add(new Temperatura("1", 28, LocalDateTime.now().minusHours(2)));
-//        temps1.add(new Temperatura("1", 30, LocalDateTime.now()));
-//        cactus.setTemperaturas(temps1);
-//
-//        // Humedad de suelo
-//        List<HumedadSuelo> humS1 = new ArrayList<>();
-//        humS1.add(new HumedadSuelo("1", 35, LocalDateTime.now().minusHours(2)));
-//        humS1.add(new HumedadSuelo("1", 32, LocalDateTime.now()));
-//        cactus.setHumedadesSuelo(humS1);
-//
-//        // Humedad ambiental
-//        List<HumedadAmbiental> humA1 = new ArrayList<>();
-//        humA1.add(new HumedadAmbiental("1", 40, LocalDateTime.now().minusHours(2)));
-//        humA1.add(new HumedadAmbiental("1", 45, LocalDateTime.now()));
-//        cactus.setHumedadesAmbientales(humA1);
-//
-//        listaPlantas.add(cactus);
-//
-//        // Planta 2
-//        Planta helecho = new Planta();
-//        helecho.setId("2");
-//        helecho.setNombre("Helecho");
-//
-//        Parametros p2 = new Parametros();
-//        p2.setRangoHumedadSuelo(new Rango("r5", 40, 70));
-//        p2.setRangoTemperatura(new Rango("r6", 18, 25));
-//        p2.setRangoHumedadAmbiental(new Rango("r7", 60, 80));
-//        p2.setRangoNivelAgua(new Rango("r8", 1, 6));
-//        helecho.setParametros(p2);
-//
-//        List<Temperatura> temps2 = new ArrayList<>();
-//        temps2.add(new Temperatura("2", 22, LocalDateTime.now()));
-//        helecho.setTemperaturas(temps2);
-//
-//        List<HumedadSuelo> humS2 = new ArrayList<>();
-//        humS2.add(new HumedadSuelo("2", 65, LocalDateTime.now()));
-//        helecho.setHumedadesSuelo(humS2);
-//
-//        List<HumedadAmbiental> humA2 = new ArrayList<>();
-//        humA2.add(new HumedadAmbiental("2", 70, LocalDateTime.now()));
-//        helecho.setHumedadesAmbientales(humA2);
-//
-//        listaPlantas.add(helecho);
-//
-//        // Planta 3
-//        Planta carnivora = new Planta();
-//        carnivora.setId("3");
-//        carnivora.setNombre("Carnívora");
-//
-//        Parametros p3 = new Parametros();
-//        p3.setRangoHumedadSuelo(new Rango("r9", 25, 47));
-//        p3.setRangoTemperatura(new Rango("r10", 36, 50));
-//        p3.setRangoHumedadAmbiental(new Rango("r11", 34, 56));
-//        p3.setRangoNivelAgua(new Rango("r12", 3, 10));
-//        carnivora.setParametros(p3);
-//
-//        List<Temperatura> temps3 = new ArrayList<>();
-//        temps3.add(new Temperatura("3", 50, LocalDateTime.now().minusHours(2)));
-//        temps3.add(new Temperatura("3", 40, LocalDateTime.now()));
-//        carnivora.setTemperaturas(temps3);
-//
-//        List<HumedadSuelo> humS3 = new ArrayList<>();
-//        humS3.add(new HumedadSuelo("3", 30, LocalDateTime.now().minusHours(2)));
-//        humS3.add(new HumedadSuelo("3", 27, LocalDateTime.now()));
-//        carnivora.setHumedadesSuelo(humS3);
-//
-//        List<HumedadAmbiental> humA3 = new ArrayList<>();
-//        humA3.add(new HumedadAmbiental("3", 45, LocalDateTime.now().minusHours(2)));
-//        humA3.add(new HumedadAmbiental("3", 50, LocalDateTime.now()));
-//        carnivora.setHumedadesAmbientales(humA3);
-//
-//        listaPlantas.add(carnivora);
-//    }
-
-    public void actualizarDashboard(Planta planta){
         txtNombrePlanta.setText(planta.getNombre());
 
-        // Última temperatura
-        double temp = planta.getTemperaturas()
-                .get(planta.getTemperaturas().size() - 1)
-                .getValor();
+        double temp = 0, humSuelo = 0, humAmb = 0;
 
-        // Última humedad del suelo
-        double humSuelo = planta.getHumedadesSuelo()
-                .get(planta.getHumedadesSuelo().size() - 1)
-                .getValor();
+        // Temperatura
+        if (planta.getTemperaturas() != null && !planta.getTemperaturas().isEmpty()) {
+            Temperatura ultimaTemp = planta.getTemperaturas()
+                    .entrySet()
+                    .stream()
+                    .map(Map.Entry::getValue)
+                    .reduce((first, second) -> second)
+                    .orElse(null);
+            if (ultimaTemp != null) temp = ultimaTemp.getValor();
+        }
 
-        // Última humedad ambiental
-        double humAmb = planta.getHumedadesAmbientales()
-                .get(planta.getHumedadesAmbientales().size() - 1)
-                .getValor();
+        // Humedad del suelo
+        if (planta.getHumedadesSuelo() != null && !planta.getHumedadesSuelo().isEmpty()) {
+            HumedadSuelo ultimaHumSuelo = planta.getHumedadesSuelo()
+                    .entrySet()
+                    .stream()
+                    .map(Map.Entry::getValue)
+                    .reduce((first, second) -> second)
+                    .orElse(null);
+            if (ultimaHumSuelo != null) humSuelo = ultimaHumSuelo.getValor();
+        }
+
+        // Humedad ambiental
+        if (planta.getHumedadesAmbientales() != null && !planta.getHumedadesAmbientales().isEmpty()) {
+            HumedadAmbiental ultimaHumAmb = planta.getHumedadesAmbientales()
+                    .entrySet()
+                    .stream()
+                    .map(Map.Entry::getValue)
+                    .reduce((first, second) -> second)
+                    .orElse(null);
+            if (ultimaHumAmb != null) humAmb = ultimaHumAmb.getValor();
+        }
 
         txtTemperatura.setText(temp + " °C");
         txtHumedadSuelo.setText(humSuelo + " %");
         txtHumedadAmbiental.setText(humAmb + " %");
 
-        // Actualización gráfica
+        // Dibujar dashboard
         int ancho = chartView.getWidth();
         int alto = chartView.getHeight();
         if (ancho == 0 || alto == 0) return;
