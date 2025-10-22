@@ -2,15 +2,19 @@ package com.example.happyplant.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.happyplant.R;
 import com.example.happyplant.utils.GPSHelper;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.DataSnapshot;
@@ -79,27 +83,40 @@ public class ecoUsuario_activity extends AppCompatActivity {
     //+-------------------------------------------------------------------------------------------+
 
     private void cargarDatosUsuario() {
-        String uid = auth.getCurrentUser().getUid();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser == null) return;
 
-        refUsuarios.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    String nombre = snapshot.child("nombre").getValue(String.class);
-                    String email = snapshot.child("email").getValue(String.class);
-                    String password = snapshot.child("passwordHash").getValue(String.class);
+        String email = firebaseUser.getEmail();
 
-                    editNombre.setText(nombre);
-                    txtEmail.setText(email);
-                    editPassword.setText(password);
-                }
-            }
+        refUsuarios.orderByChild("email").equalTo(email)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            for (DataSnapshot userSnap : snapshot.getChildren()) {
+                                String nombre = userSnap.child("nombre").getValue(String.class);
+                                String password = userSnap.child("passwordHash").getValue(String.class);
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Toast.makeText(ecoUsuario_activity.this, "Error al cargar datos", Toast.LENGTH_SHORT).show();
-            }
-        });
+                                editNombre.setText(nombre);
+                                txtEmail.setText(email);
+                                editPassword.setText(password);
+
+                                String uid = userSnap.getKey(); // CAMBIO: UID guardado si se necesita
+                                Log.d("EcoUsuario", "Usuario cargado: " + nombre + " (UID: " + uid + ")");
+                            }
+                        } else {
+                            Toast.makeText(ecoUsuario_activity.this,
+                                    "Usuario no encontrado en la base de datos", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(ecoUsuario_activity.this,
+                                "Error al cargar datos del usuario", Toast.LENGTH_SHORT).show();
+                        Log.e("EcoUsuario", "Error Firebase", error.toException());
+                    }
+                });
     }
 
     //+-------------------------------------------------------------------------------------------+
@@ -115,7 +132,6 @@ public class ecoUsuario_activity extends AppCompatActivity {
 
         guardarNombre(nuevoNombre);
         guardarPassword(passwordActual, nuevaPassword);
-
     }
 
 
@@ -138,7 +154,6 @@ public class ecoUsuario_activity extends AppCompatActivity {
         Map<String, Object> actualizacion = new HashMap<>();
         actualizacion.put("passwordHash", "**********");
         // solo decorativo
-
         refUsuarios.child(uid).updateChildren(actualizacion)
                 .addOnSuccessListener(aVoid -> {
                     // toast informativo
@@ -155,11 +170,9 @@ public class ecoUsuario_activity extends AppCompatActivity {
             public void onSuccess() {
                 Toast.makeText(ecoUsuario_activity.this, "Contraseña actualizada correctamente", Toast.LENGTH_SHORT).show();
 
-                // Actualizar contraseña decorativa en la base de datos
                 String uid = auth.getCurrentUser().getUid();
                 actualizarPasswordDecorativa(uid);
 
-                // Limpiar campos
                 limpiarCamposContrasena();
             }
 
@@ -169,7 +182,6 @@ public class ecoUsuario_activity extends AppCompatActivity {
             }
         });
     }
-
 
     @Override
     protected void onResume () {
