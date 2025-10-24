@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.happyplant.R;
+import com.example.happyplant.model.Parametros;
+import com.example.happyplant.model.Rango;
 import com.example.happyplant.utils.GPSHelper;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -35,13 +37,15 @@ import java.util.Map;
 
 public class ecoControl_activity extends AppCompatActivity {
 
-    private TextView txtGPS, labelWaterRange, labelHumidityRange, labelTemperatureRange;
+    private TextView txtGPS, labelAmbientalRange, labelHumidityRange, labelTemperatureRange;
     private GPSHelper gpsHelper;
-    private Spinner spinnerPlantas;
+    private Spinner spinnerPlantas, spinnerWiki;
     private UsuarioRepository usuarioRepo;
     private Button btnSave;
     private Usuario usuarioLogueado;
-    private RangeSlider sliderWater, sliderHumidity, sliderTemperature;
+    private RangeSlider sliderAmbiental, sliderHumidity, sliderTemperature;
+
+    private List<Planta> listaPlantasWiki = new ArrayList<>();
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
@@ -61,15 +65,17 @@ public class ecoControl_activity extends AppCompatActivity {
 
         //spinner para la planta
         spinnerPlantas = findViewById(R.id.spinnerPlantas);
+        spinnerWiki = findViewById(R.id.spinnerWiki);
         //Repositorio de usuarios
         usuarioRepo = new UsuarioRepository();
 
         // Sliders
-        sliderWater = findViewById(R.id.sliderWater);
+        sliderAmbiental = findViewById(R.id.sliderAmbiental);
         sliderHumidity = findViewById(R.id.sliderHumidity);
         sliderTemperature = findViewById(R.id.sliderTemperature);
+
         // Etiquetas para mostrar rango actual
-        labelWaterRange = findViewById(R.id.labelWaterRange);
+        labelAmbientalRange = findViewById(R.id.labelAmbientalRange);
         labelHumidityRange = findViewById(R.id.labelHumidityRange);
         labelTemperatureRange = findViewById(R.id.labelTemperatureRange);
 
@@ -78,6 +84,8 @@ public class ecoControl_activity extends AppCompatActivity {
 
         // Detectar cambios en los sliders para actualizar texto en tiempo real
         configurarListenersDeSliders();
+        // Cargar plantas Wiki precargadas
+        cargarPlantasWiki();
 
         // Botón guardar
         btnSave = findViewById(R.id.btnSave);
@@ -162,18 +170,69 @@ public class ecoControl_activity extends AppCompatActivity {
         });
     }
 
+    private void cargarPlantasWiki() {
+        listaPlantasWiki.clear();
 
+        // Plantas precargadas con Humedad Ambiental
+        listaPlantasWiki.add(crearPlantaWiki("Orquídea", 50f, 70f, 50f, 70f, 18f, 24f));
+        listaPlantasWiki.add(crearPlantaWiki("Cactus Mini", 20f, 30f, 10f, 30f, 20f, 30f));
+        listaPlantasWiki.add(crearPlantaWiki("Ficus Mini", 40f, 60f, 40f, 60f, 18f, 25f));
+        listaPlantasWiki.add(crearPlantaWiki("Helecho Mini", 60f, 80f, 60f, 80f, 16f, 22f));
+        listaPlantasWiki.add(crearPlantaWiki("Suculenta", 30f, 50f, 20f, 40f, 18f, 28f));
+        listaPlantasWiki.add(crearPlantaWiki("Pilea", 40f, 60f, 40f, 60f, 18f, 24f));
+        listaPlantasWiki.add(crearPlantaWiki("Espatifilo", 50f, 70f, 50f, 70f, 18f, 24f));
+        listaPlantasWiki.add(crearPlantaWiki("Calatea", 60f, 80f, 60f, 80f, 18f, 24f));
+        listaPlantasWiki.add(crearPlantaWiki("Hiedra", 40f, 60f, 40f, 60f, 16f, 22f));
+        listaPlantasWiki.add(crearPlantaWiki("Bonsái", 30f, 50f, 40f, 60f, 15f, 25f));
+        listaPlantasWiki.add(crearPlantaWiki("Zamioculca", 30f, 50f, 30f, 50f, 18f, 28f));
+        listaPlantasWiki.add(crearPlantaWiki("Kalanchoe", 20f, 40f, 30f, 50f, 18f, 28f));
+        listaPlantasWiki.add(crearPlantaWiki("Anthurium", 50f, 70f, 60f, 80f, 18f, 25f));
+        listaPlantasWiki.add(crearPlantaWiki("Crotón", 40f, 60f, 50f, 70f, 18f, 26f));
+        listaPlantasWiki.add(crearPlantaWiki("Fitonia", 50f, 70f, 60f, 80f, 18f, 24f));
+
+        List<String> nombres = new ArrayList<>();
+        for (Planta p : listaPlantasWiki) nombres.add(p.getNombre());
+
+        ArrayAdapter<String> adapterWiki = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, nombres);
+        adapterWiki.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerWiki.setAdapter(adapterWiki);
+
+        spinnerWiki.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Planta plantaSeleccionada = listaPlantasWiki.get(position);
+                actualizarSliders(plantaSeleccionada);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+    }
+
+    private Planta crearPlantaWiki(String nombre, double humAmbientalMin, double humAmbientalMax, double humSueloMin, double humSueloMax, double tempMin, double tempMax) {
+        Planta p = new Planta();
+        p.setNombre(nombre);
+
+        Parametros param = new Parametros();
+        // Solo humedad ambiental, humedad suelo y temperatura
+        param.setRangoHumedadAmbiental(new Rango(null, humAmbientalMin, humAmbientalMax));
+        param.setRangoHumedadSuelo(new Rango(null, humSueloMin, humSueloMax));
+        param.setRangoTemperatura(new Rango(null, tempMin, tempMax));
+
+        p.setParametros(param);
+        return p;
+    }
     private void actualizarSliders(Planta planta) {
         if (planta.getParametros() == null) return;
 
-        // Agua
-        if (planta.getParametros().getRangoNivelAgua() != null) {
-            float min = (float) planta.getParametros().getRangoNivelAgua().getMinimo();
-            float max = (float) planta.getParametros().getRangoNivelAgua().getMaximo();
-            sliderWater.setValues(min, max);
-            sliderWater.setValueFrom(0);
-            sliderWater.setValueTo(max + 10);
-            labelWaterRange.setText("Min: " + min + " ml   -   Max: " + max + " ml");
+        // humedad ambiental
+        if (planta.getParametros().getRangoHumedadAmbiental() != null) {
+            float min = (float) planta.getParametros().getRangoHumedadAmbiental().getMinimo();
+            float max = (float) planta.getParametros().getRangoHumedadAmbiental().getMaximo();
+            sliderAmbiental.setValues(min, max);
+            sliderAmbiental.setValueFrom(0);
+            sliderAmbiental.setValueTo(100);
+            labelAmbientalRange.setText("Min: " + min + "%   -   Max: " + max + "%");
         }
 
         // Humedad
@@ -198,9 +257,9 @@ public class ecoControl_activity extends AppCompatActivity {
     }
 
     private void configurarListenersDeSliders() {
-        sliderWater.addOnChangeListener((slider, value, fromUser) -> {
+        sliderAmbiental.addOnChangeListener((slider, value, fromUser) -> {
             List<Float> vals = slider.getValues();
-            labelWaterRange.setText("Min: " + vals.get(0) + " ml   -   Max: " + vals.get(1) + " ml");
+            labelAmbientalRange.setText("Min: " + vals.get(0) + "%   -   Max: " + vals.get(1) + "%");
         });
 
         sliderHumidity.addOnChangeListener((slider, value, fromUser) -> {
@@ -234,12 +293,14 @@ public class ecoControl_activity extends AppCompatActivity {
             return;
         }
 
-        List<Float> agua = sliderWater.getValues();
+        // Valores de los sliders
+        List<Float> ambiental = sliderAmbiental.getValues();
         List<Float> humedad = sliderHumidity.getValues();
         List<Float> temp = sliderTemperature.getValues();
 
-        plantaSeleccionada.getParametros().getRangoNivelAgua().setMinimo(agua.get(0));
-        plantaSeleccionada.getParametros().getRangoNivelAgua().setMaximo(agua.get(1));
+        // Actualizar parámetros
+        plantaSeleccionada.getParametros().getRangoHumedadAmbiental().setMinimo(ambiental.get(0));
+        plantaSeleccionada.getParametros().getRangoHumedadAmbiental().setMaximo(ambiental.get(1));
         plantaSeleccionada.getParametros().getRangoHumedadSuelo().setMinimo(humedad.get(0));
         plantaSeleccionada.getParametros().getRangoHumedadSuelo().setMaximo(humedad.get(1));
         plantaSeleccionada.getParametros().getRangoTemperatura().setMinimo(temp.get(0));
@@ -251,7 +312,7 @@ public class ecoControl_activity extends AppCompatActivity {
                 .child(plantaSeleccionada.getId())
                 .setValue(plantaSeleccionada)
                 .addOnSuccessListener(aVoid ->
-                        Toast.makeText(this, "Parámetros actualizados correctamente", Toast.LENGTH_SHORT).show())
+                        Toast.makeText(this, "Parámetros ambientales actualizados correctamente", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Error al guardar: " + e.getMessage(), Toast.LENGTH_LONG).show());
     }
