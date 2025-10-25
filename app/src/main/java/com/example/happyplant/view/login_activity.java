@@ -14,6 +14,8 @@ import com.example.happyplant.utils.GPSHelper;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class login_activity extends AppCompatActivity {
 
@@ -73,9 +75,32 @@ public class login_activity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show();
+
+                        FirebaseUser user = auth.getCurrentUser();
+                        if (user != null) {
+                            // 🔥 Obtener token FCM y guardarlo en la BD
+                            registrarTokenFCM(user.getUid());
+                        }
+
                         irAMenu();
                     } else {
                         Toast.makeText(this, "Error: Usuario no registrado", Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    private void registrarTokenFCM(String uid) {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(tokenTask -> {
+                    if (tokenTask.isSuccessful()) {
+                        String token = tokenTask.getResult();
+                        FirebaseDatabase.getInstance().getReference("usuarios")
+                                .child(uid)
+                                .child("token")
+                                .setValue(token);
+                        Toast.makeText(this, "Token registrado", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Error al obtener token FCM", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

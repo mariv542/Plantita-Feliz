@@ -1,6 +1,9 @@
 package com.example.happyplant.view;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -25,6 +28,9 @@ public class menu_activity extends AppCompatActivity {
         ImageButton btnMenu_ecoPlanta = findViewById(R.id.btn_menu_ecoPlanta);
         ImageButton btnMenu_ecoControl = findViewById(R.id.btn_menu_ecoControl);
         ImageButton btnMenu_perfil = findViewById(R.id.btn_menu_perfil);
+
+        // Notificaciones
+        verificarPermisoNotificaciones();
 
         //Para GPS
         txtGPS = findViewById(R.id.txtGPS);
@@ -75,5 +81,13 @@ public class menu_activity extends AppCompatActivity {
             // para serrar la pestaña dde login y que no vuelva atras dar finish:
             // finish();
         });
+    }
+
+    private void verificarPermisoNotificaciones() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        }
     }
 }

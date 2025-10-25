@@ -54,6 +54,9 @@ dependencies {
     //  Firebase Auth (solo si usarás login/registro)
     implementation("com.google.firebase:firebase-auth")
 
+    // Firebase Messaging (notificaciones)
+    implementation("com.google.firebase:firebase-messaging")
+
     // 🔹 Google Play Services - Ubicación (para GPS)
     implementation("com.google.android.gms:play-services-location:21.3.0")
 
