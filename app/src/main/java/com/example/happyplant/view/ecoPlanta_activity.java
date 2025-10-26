@@ -5,9 +5,11 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,12 +31,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class ecoPlanta_activity extends AppCompatActivity {
 
     private EditText etEcoPlanta_nombrePlanta, etEcoPlanta_idMaceta;
     private Button btnEcoPlanta_guardar;
+    private Spinner spinnerMaceta;
     private UsuarioRepository usuarioRepo;
     private PlantaRepository plantaRepo;
     private Usuario usuarioLogueado;
@@ -42,6 +46,7 @@ public class ecoPlanta_activity extends AppCompatActivity {
     private TextView txtGPS;
     private ImageButton btnEcoPlanta_regresar;
     private GPSHelper gpsHelper;
+    private ArrayList<String> listaIds;
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -53,6 +58,7 @@ public class ecoPlanta_activity extends AppCompatActivity {
         etEcoPlanta_nombrePlanta = findViewById(R.id.et_ecoPlanta_nombrePlanta);
         etEcoPlanta_idMaceta = findViewById(R.id.et_ecoPlanta_idMaceta);
         btnEcoPlanta_guardar = findViewById(R.id.btn_ecoPlanta_guardar);
+        spinnerMaceta = findViewById(R.id.spinnerMacetas);
 
         // firebase
         auth = FirebaseAuth.getInstance();
@@ -84,7 +90,49 @@ public class ecoPlanta_activity extends AppCompatActivity {
             // para serrar la pestaña dde login y que no vuelva atras dar finish:
             // finish();
         });
+
+        // Spinner: cargar IDs de plantas desde Firebase
+        listaIds = new ArrayList<>();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listaIds);
+        spinnerMaceta.setAdapter(adapter);
+
+        DatabaseReference refPlantas = FirebaseDatabase.getInstance().getReference("plantas");
+        refPlantas.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listaIds.clear();
+                listaIds.add("Seleccionar maceta...");
+                for (DataSnapshot plantaSnap : snapshot.getChildren()) {
+                    listaIds.add(plantaSnap.getKey());
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ecoPlanta_activity.this, "Error al cargar IDs: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        spinnerMaceta.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, android.view.View view, int position, long id) {
+                if (position > 0) { // Ignora la opción "Seleccionar..."
+                    String idSeleccionado = listaIds.get(position);
+                    etEcoPlanta_idMaceta.setText(idSeleccionado);
+                } else {
+                    etEcoPlanta_idMaceta.setText("");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+                etEcoPlanta_idMaceta.setText("");
+            }
+        });
+
     }
+
 
     //+--------------------------------------------------------------------------------------------+
 
@@ -162,7 +210,7 @@ public class ecoPlanta_activity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            // Firebase convierte automáticamente todo a Planta
+                            // Firebase convierte automáticamente todoa Planta
                             Planta planta = snapshot.getValue(Planta.class);
                             if (planta == null) {
                                 Toast.makeText(ecoPlanta_activity.this, "Error al leer la planta.", Toast.LENGTH_SHORT).show();

@@ -5,7 +5,8 @@
     android:id="@+id/eco_planta"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    tools:context=".view.ecoPlanta_activity">
 
     <!-- Header verde -->
     <LinearLayout
@@ -42,16 +43,51 @@
             android:layout_marginStart="12dp"/>
     </LinearLayout>
 
+    <!-- 🔹 Texto de prueba de maceta -->
+    <TextView
+        android:id="@+id/tvPruebaMaceta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Prueba de maceta"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Spinner para seleccionar ID de maceta -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_ecoPlanta_spinnerMaceta"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="3dp"
+        app:layout_constraintTop_toBottomOf="@id/tvPruebaMaceta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Spinner
+            android:id="@+id/spinnerMacetas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
+            android:prompt="@string/select_maceta" />
+    </com.google.android.material.card.MaterialCardView>
+
     <!-- Campo Nombre de la planta -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_ecoPlanta_nombrePlanta"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="12dp"
         android:layout_marginHorizontal="16dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="3dp"
-        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintTop_toBottomOf="@id/card_ecoPlanta_spinnerMaceta"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -68,7 +104,6 @@
                 android:src="@drawable/icon_plant"
                 android:padding="6dp"
                 android:layout_marginEnd="12dp"/>
-            <!--            android:background="@drawable/bg_circle_light_green"-->
 
             <EditText
                 android:id="@+id/et_ecoPlanta_nombrePlanta"
@@ -102,15 +137,6 @@
             android:padding="12dp"
             android:gravity="center_vertical">
 
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:padding="6dp"
-                android:layout_marginEnd="12dp"/>
-            <!--                android:src="@drawable/ic_pot"-->
-            <!--                android:background="@drawable/bg_circle_dark_gray"-->
-
-
             <EditText
                 android:id="@+id/et_ecoPlanta_idMaceta"
                 android:layout_width="0dp"
@@ -135,17 +161,12 @@
         android:textColor="@android:color/white"
         android:textSize="16sp"
         app:cornerRadius="20dp"
-        app:iconGravity="textEnd"
-        app:iconTint="@android:color/white"
-        app:iconPadding="8dp"
         app:layout_constraintTop_toBottomOf="@id/card_ecoPlanta_idMaceta"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:backgroundTint="@color/dark_green"/>
-    <!--        app:icon="@drawable/ic_arrow_forward"-->
 
-
-    <!-- Imagen plantas abajo -->
+    <!-- Imagen -->
     <ImageView
         android:id="@+id/imgPlantas"
         android:layout_width="0dp"
@@ -155,7 +176,6 @@
         android:foreground="@drawable/bg_gradient_top_to_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <include
