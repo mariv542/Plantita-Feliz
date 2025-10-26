@@ -41,19 +41,32 @@
             android:textStyle="bold"/>
     </LinearLayout>
 
-    <!-- Texto Raíz Mágica -->
+    <!-- TextView de parámetros elegidos -->
     <TextView
-        android:id="@+id/textRaizMagica"
+        android:id="@+id/textParametrosElegidos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
-        android:text="Raíz Mágica"
+        android:text="Elegir Parametros"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@id/topBar"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Texto para seleccionar planta -->
+    <TextView
+        android:id="@+id/textElijaPlanta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Elija su planta"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/textParametrosElegidos"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <!-- Spinner para seleccionar planta del usuario -->
     <LinearLayout
@@ -64,8 +77,9 @@
         android:gravity="center_vertical"
         android:background="@drawable/bg_light_gray_rounded"
         android:padding="8dp"
-        android:layout_margin="16dp"
-        app:layout_constraintTop_toBottomOf="@id/textRaizMagica"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@id/textElijaPlanta"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -81,14 +95,54 @@
             android:layout_marginStart="12dp"/>
     </LinearLayout>
 
-    <!-- Sliders -->
+    <!-- Texto para seleccionar parámetro (opcional) -->
+    <TextView
+        android:id="@+id/textElijaParametro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Elija el parámetro deseado (opcional)"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/inputContainer"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- Spinner Wiki -->
+    <LinearLayout
+        android:id="@+id/wikiContainer"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_light_gray_rounded"
+        android:padding="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@id/textElijaParametro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/icon_plant"/>
+
+        <Spinner
+            android:id="@+id/spinnerWiki"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"/>
+    </LinearLayout>
+
+    <!-- Sliders y etiquetas -->
     <LinearLayout
         android:id="@+id/slidersContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="16dp"
-        app:layout_constraintTop_toBottomOf="@id/inputContainer"
+        app:layout_constraintTop_toBottomOf="@id/wikiContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -170,34 +224,6 @@
             android:gravity="center"/>
     </LinearLayout>
 
-    <!-- Spinner Wiki arriba de Guardar -->
-    <LinearLayout
-        android:id="@+id/wikiContainer"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="@drawable/bg_light_gray_rounded"
-        android:padding="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/slidersContainer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/icon_plant"/>
-
-        <Spinner
-            android:id="@+id/spinnerWiki"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"/>
-    </LinearLayout>
-
     <!-- Botón Guardar -->
     <Button
         android:id="@+id/btnSave"
@@ -211,7 +237,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wikiContainer"
+        app:layout_constraintTop_toBottomOf="@+id/slidersContainer"
         app:layout_constraintVertical_bias="0.106" />
 
     <include
