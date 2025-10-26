@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Happy Plant</string>
     <string name="desc_btn_back">Botón de regresar</string>
+    <string name="select_maceta">Selecciona una maceta</string>
+    <string-array name="empty_array"></string-array>
 
 </resources>
