@@ -5,32 +5,58 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.happyplant.R;
+import com.example.happyplant.model.HumedadSuelo;
+import com.example.happyplant.model.Planta;
+import com.example.happyplant.model.Rango;
+import com.example.happyplant.model.Usuario;
 import com.example.happyplant.utils.GPSHelper;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class menu_activity extends AppCompatActivity {
 
     private TextView txtGPS;
     private GPSHelper gpsHelper;
+    private Usuario usuarioLogueado;
+    private ImageView imgPlanta;
+    private ImageButton btnMenu_perfil,btnMenu_ecoControl,btnMenu_ecoPlanta,btnMenu_ecoAviso,btnMenu_ecoAvance ;
     @Override
     protected void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
         setContentView(R.layout.menu);
         //+--------------------------------------------------------------------------------------------+
 
-        ImageButton btnMenu_ecoAvance = findViewById(R.id.btn_menu_ecoAvance);
-        ImageButton btnMenu_ecoAviso = findViewById(R.id.btn_menu_ecoAviso);
-        ImageButton btnMenu_ecoPlanta = findViewById(R.id.btn_menu_ecoPlanta);
-        ImageButton btnMenu_ecoControl = findViewById(R.id.btn_menu_ecoControl);
-        ImageButton btnMenu_perfil = findViewById(R.id.btn_menu_perfil);
-
+        btnMenu_ecoAvance = findViewById(R.id.btn_menu_ecoAvance);
+        btnMenu_ecoAviso = findViewById(R.id.btn_menu_ecoAviso);
+        btnMenu_ecoPlanta = findViewById(R.id.btn_menu_ecoPlanta);
+        btnMenu_ecoControl = findViewById(R.id.btn_menu_ecoControl);
+        btnMenu_perfil = findViewById(R.id.btn_menu_perfil);
+        imgPlanta = findViewById(R.id.imgHumedad);
         // Notificaciones
         verificarPermisoNotificaciones();
+        cargarUsuarioLogueado();
+
+
 
         //Para GPS
         txtGPS = findViewById(R.id.txtGPS);
@@ -90,4 +116,97 @@ public class menu_activity extends AppCompatActivity {
             }
         }
     }
-}
+    private void cargarUsuarioLogueado() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser == null) return;
+
+        String email = firebaseUser.getEmail();
+        DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("usuarios");
+
+        usuariosRef.orderByChild("email").equalTo(email)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            for (DataSnapshot userSnap : snapshot.getChildren()) {
+                                usuarioLogueado = userSnap.getValue(Usuario.class);
+                                usuarioLogueado.setId(userSnap.getKey());
+
+                                // Cargar planta del usuario
+                                cargarPlantaUsuario();
+                                break;
+                            }
+                        } else {
+                            Toast.makeText(menu_activity.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("MenuActivity", "Error al consultar usuario", error.toException());
+                    }
+                });
+    }
+    private void cargarPlantaUsuario() {
+        if (usuarioLogueado == null) return;
+
+        DatabaseReference plantasRef = FirebaseDatabase.getInstance().getReference("plantas");
+        plantasRef.orderByChild("usuarioId").equalTo(usuarioLogueado.getId())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            // Map de plantas del usuario
+                            Map<String, Planta> mapPlantas = new HashMap<>();
+
+                            for (DataSnapshot plantaSnap : snapshot.getChildren()) {
+                                Planta planta = plantaSnap.getValue(Planta.class);
+                                if (planta == null) continue;
+                                planta.setId(plantaSnap.getKey());
+                                planta.cargarDatosDesdeSnapshot(plantaSnap);
+
+                                // Guardamos en el map usando el ID como clave
+                                mapPlantas.put(planta.getId(), planta);
+                            }
+
+                            // Guardamos el map en el usuario
+                            usuarioLogueado.setPlantas(mapPlantas);
+
+                            // Tomamos la primera planta si existe
+                            if (!mapPlantas.isEmpty()) {
+                                Planta primeraPlanta = mapPlantas.values().iterator().next();
+
+                                if (primeraPlanta.getHumedadesSuelo() != null && !primeraPlanta.getHumedadesSuelo().isEmpty()) {
+                                    Map.Entry<String, HumedadSuelo> entrada = primeraPlanta.getHumedadesSuelo().entrySet().iterator().next();
+                                    double humedadActual = entrada.getValue().getValor();
+                                    actualizarImagenHumedad(humedadActual, primeraPlanta);
+                                }
+                            }
+                        } else {
+                            Toast.makeText(menu_activity.this, "No hay plantas para este usuario", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("MenuActivity", "Error al cargar planta", error.toException());
+                    }
+                });
+    }
+        private void actualizarImagenHumedad(double humedadActual, Planta planta) {
+            if (planta == null || planta.getParametros() == null || planta.getParametros().getRangoHumedadSuelo() == null) return;
+
+            Rango rango = planta.getParametros().getRangoHumedadSuelo();
+
+            if (humedadActual < rango.getMinimo()) {
+                imgPlanta.setImageResource(R.drawable.planta_triste); // Falta humedad
+            } else if (humedadActual > rango.getMaximo()) {
+                imgPlanta.setImageResource(R.drawable.planta_normal); // Exceso de humedad
+            } else {
+                imgPlanta.setImageResource(R.drawable.planta_feliz); // Dentro del rango
+            }
+        }
+
+    }
+
+

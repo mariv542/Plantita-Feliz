@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Contenedor -->
+    <!-- Contenedor principal -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,7 +29,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- Imagen de la planta (arriba) -->
+
         <!-- Títulos -->
+        <ImageView
+            android:id="@+id/imgHumedad"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="15dp"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="Estado de la planta"
+            android:scaleType="fitCenter"
+            android:src="@drawable/planta_normal" />
+
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
