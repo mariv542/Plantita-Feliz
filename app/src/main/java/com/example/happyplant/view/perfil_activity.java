@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class perfil_activity extends AppCompatActivity {
 
     private FirebaseAuth auth;
-    private MaterialCardView card_InformacionPersonal, card_dispositivos;
+    private MaterialCardView card_InformacionPersonal, card_dispositivos, cardSoporte;
     private MaterialCardView card_logout;
     private ImageButton btnPerfil_regresar;
     private TextView txtGPS;
@@ -40,6 +40,7 @@ public class perfil_activity extends AppCompatActivity {
         // card informacion personal
         card_InformacionPersonal = findViewById(R.id.card_perfil_informacionPersonal);
         card_dispositivos = findViewById(R.id.cardDispositivos);
+        cardSoporte = findViewById(R.id.cardSoporte);
 
         // card log out
         card_logout = findViewById(R.id.card_perfil_Salir);
@@ -70,6 +71,11 @@ public class perfil_activity extends AppCompatActivity {
             startActivity(intent);
             // para serrar la pestaña dde login y que no vuelva atras dar finish:
             // finish();
+        });
+
+        cardSoporte.setOnClickListener(v -> {
+            Intent intent = new Intent(perfil_activity.this, soporteActivity.class);
+            startActivity(intent);
         });
         //+--------------------------------------------------------------------------------------------+
     }

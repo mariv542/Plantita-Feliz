@@ -37,6 +37,7 @@
         <activity android:name=".view.registrar_activity" />
         <activity android:name=".view.ecoUsuario_activity" />
         <activity android:name=".view.dispositivos_activity" />
+        <activity android:name=".view.soporteActivity" />
     </application>
 
 </manifest>
