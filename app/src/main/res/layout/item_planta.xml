@@ -1,22 +1,40 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
-    android:orientation="vertical">
+    android:layout_margin="8dp"
+    android:background="@android:color/white"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="1dp"
+    app:strokeColor="@android:color/darker_gray"
+    app:strokeWidth="1dp"
+    android:padding="5dp"> <!-- aumentado de 12dp a 16dp -->
 
-    <TextView
-        android:id="@+id/txtNombrePlanta"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nombre Planta"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:orientation="vertical"
+        android:padding="8dp"> <!-- padding interno adicional -->
 
-    <TextView
-        android:id="@+id/txtIdPlanta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ID Planta"
-        android:textSize="14sp"
-        android:textColor="@color/gray"/>
-</LinearLayout>
+        <!-- Nombre de la planta -->
+        <TextView
+            android:id="@+id/tvNombrePlanta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre de planta"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
+
+        <!-- ID de la maceta -->
+        <TextView
+            android:id="@+id/tvIdMaceta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID de maceta"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -42,10 +42,12 @@ public class PlantasAdapter extends RecyclerView.Adapter<PlantasAdapter.PlantaVi
 
     public static class PlantaViewHolder extends RecyclerView.ViewHolder {
         TextView txtNombre, txtId;
+
         public PlantaViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtNombre = itemView.findViewById(R.id.txtNombrePlanta);
-            txtId = itemView.findViewById(R.id.txtIdPlanta);
+            // Cambiado para coincidir con los ids del nuevo XML
+            txtNombre = itemView.findViewById(R.id.tvNombrePlanta);
+            txtId = itemView.findViewById(R.id.tvIdMaceta);
         }
     }
 }
