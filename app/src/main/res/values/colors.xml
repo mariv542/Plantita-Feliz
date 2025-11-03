@@ -15,5 +15,13 @@
     <color name="teal_200">#4DD0E1</color>     <!-- Icono frío -->
     <color name="red">#F44336</color>          <!-- Icono calor -->
 
+    <color name="red_transparent">#80F44336</color>     <!-- Rojo con 50% de opacidad -->
+    <color name="yellow_transparent">#80FFC107</color>  <!-- Amarillo con 50% de opacidad -->
+    <color name="green_transparent">#804CAF50</color>   <!-- Verde con 50% de opacidad -->
 
+    <color name="orange_past">#FFA726</color>
+    <color name="gray_soft">#E0E0E0</color>
+
+    <color name="text_primary">#212121</color> <!-- Gris oscuro (texto principal) -->
+    <color name="text_secondary">#757575</color> <!-- Gris más claro (texto secundario) -->
 </resources>

@@ -200,9 +200,9 @@ public class menu_activity extends AppCompatActivity {
             Rango rango = planta.getParametros().getRangoHumedadSuelo();
 
             if (humedadActual < rango.getMinimo()) {
-                imgPlanta.setImageResource(R.drawable.planta_triste); // Falta humedad
+                imgPlanta.setImageResource(R.drawable.planta_normal); // Falta humedad
             } else if (humedadActual > rango.getMaximo()) {
-                imgPlanta.setImageResource(R.drawable.planta_normal); // Exceso de humedad
+                imgPlanta.setImageResource(R.drawable.planta_triste); // Exceso de humedad
             } else {
                 imgPlanta.setImageResource(R.drawable.planta_feliz); // Dentro del rango
             }
