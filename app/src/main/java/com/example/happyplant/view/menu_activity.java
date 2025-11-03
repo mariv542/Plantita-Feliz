@@ -150,48 +150,49 @@ public class menu_activity extends AppCompatActivity {
     private void cargarPlantaUsuario() {
         if (usuarioLogueado == null) return;
 
-        DatabaseReference plantasRef = FirebaseDatabase.getInstance().getReference("plantas");
-        plantasRef.orderByChild("usuarioId").equalTo(usuarioLogueado.getId())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            // Map de plantas del usuario
-                            Map<String, Planta> mapPlantas = new HashMap<>();
+        DatabaseReference plantasRef = FirebaseDatabase.getInstance()
+                .getReference("usuarios")
+                .child(usuarioLogueado.getId())
+                .child("plantas");
 
-                            for (DataSnapshot plantaSnap : snapshot.getChildren()) {
-                                Planta planta = plantaSnap.getValue(Planta.class);
-                                if (planta == null) continue;
-                                planta.setId(plantaSnap.getKey());
-                                planta.cargarDatosDesdeSnapshot(plantaSnap);
+        plantasRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Map<String, Planta> mapPlantas = new HashMap<>();
 
-                                // Guardamos en el map usando el ID como clave
-                                mapPlantas.put(planta.getId(), planta);
-                            }
+                    for (DataSnapshot plantaSnap : snapshot.getChildren()) {
+                        Planta planta = plantaSnap.getValue(Planta.class);
+                        if (planta == null) continue;
+                        planta.setId(plantaSnap.getKey());
+                        planta.cargarDatosDesdeSnapshot(plantaSnap);
 
-                            // Guardamos el map en el usuario
-                            usuarioLogueado.setPlantas(mapPlantas);
+                        mapPlantas.put(planta.getId(), planta);
+                    }
 
-                            // Tomamos la primera planta si existe
-                            if (!mapPlantas.isEmpty()) {
-                                Planta primeraPlanta = mapPlantas.values().iterator().next();
+                    usuarioLogueado.setPlantas(mapPlantas);
 
-                                if (primeraPlanta.getHumedadesSuelo() != null && !primeraPlanta.getHumedadesSuelo().isEmpty()) {
-                                    Map.Entry<String, HumedadSuelo> entrada = primeraPlanta.getHumedadesSuelo().entrySet().iterator().next();
-                                    double humedadActual = entrada.getValue().getValor();
-                                    actualizarImagenHumedad(humedadActual, primeraPlanta);
-                                }
-                            }
-                        } else {
-                            Toast.makeText(menu_activity.this, "No hay plantas para este usuario", Toast.LENGTH_SHORT).show();
+                    // Seleccionar la primera planta automáticamente
+                    if (!mapPlantas.isEmpty()) {
+                        Planta primeraPlanta = mapPlantas.values().iterator().next();
+
+                        if (primeraPlanta.getHumedadesSuelo() != null && !primeraPlanta.getHumedadesSuelo().isEmpty()) {
+                            Map.Entry<String, HumedadSuelo> entrada =
+                                    primeraPlanta.getHumedadesSuelo().entrySet().iterator().next();
+                            double humedadActual = entrada.getValue().getValor();
+                            actualizarImagenHumedad(humedadActual, primeraPlanta);
                         }
                     }
+                } else {
+                    Toast.makeText(menu_activity.this, "No hay plantas registradas para este usuario", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Log.e("MenuActivity", "Error al cargar planta", error.toException());
-                    }
-                });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("MenuActivity", "Error al cargar planta", error.toException());
+            }
+        });
     }
         private void actualizarImagenHumedad(double humedadActual, Planta planta) {
             if (planta == null || planta.getParametros() == null || planta.getParametros().getRangoHumedadSuelo() == null) return;
