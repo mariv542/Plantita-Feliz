@@ -93,7 +93,7 @@
                 android:layout_marginBottom="8dp"
                 android:gravity="center">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnFiltroDia"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -101,10 +101,13 @@
                     android:layout_marginEnd="4dp"
                     android:text="Último Día"
                     android:textSize="12sp"
-                    android:background="@drawable/bg_borde_gray_rounded"
-                    android:textColor="@color/black"/>
+                    android:textColor="@android:color/white"
+                    app:backgroundTint="#2E7D32"
+                    app:cornerRadius="12dp"
+                    app:strokeWidth="0dp"/>
 
-                <Button
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnFiltroMes"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -112,18 +115,22 @@
                     android:layout_marginEnd="4dp"
                     android:text="Último Mes"
                     android:textSize="12sp"
-                    android:background="@drawable/bg_borde_gray_rounded"
-                    android:textColor="@color/black"/>
+                    android:textColor="@android:color/white"
+                    app:backgroundTint="#2E7D32"
+                    app:cornerRadius="12dp"
+                    app:strokeWidth="0dp"/>
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnFiltroAnio"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Último Año"
                     android:textSize="12sp"
-                    android:background="@drawable/bg_borde_gray_rounded"
-                    android:textColor="@color/black"/>
+                    android:textColor="@android:color/white"
+                    app:backgroundTint="#2E7D32"
+                    app:cornerRadius="12dp"
+                    app:strokeWidth="0dp"/>
             </LinearLayout>
 
             <!-- 🔹 Barra de búsqueda por fecha -->
@@ -149,7 +156,7 @@
 
                     android:textColorHint="@color/dark_gray"/>
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnBuscar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -158,9 +165,10 @@
                     android:text="Buscar"
                     android:textStyle="bold"
                     android:textSize="12sp"
-                    android:background="@drawable/bg_borde_gray_rounded"
-                    android:textColor="@color/black"
-                    android:backgroundTint="@color/gray"/>
+                    android:textColor="@android:color/white"
+                    app:backgroundTint="#2E7D32"
+                    app:cornerRadius="12dp"
+                    app:strokeWidth="0dp"/>
             </LinearLayout>
 
         </LinearLayout>

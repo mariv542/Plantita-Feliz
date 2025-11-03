@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,6 +31,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ecoAvance_activity extends AppCompatActivity {
@@ -36,7 +40,12 @@ public class ecoAvance_activity extends AppCompatActivity {
     private Spinner spinnerPlantas;
     private ImageButton btnEcoAvanceRegresar;
     private LineChart chartAmbiente, chartSuelo;
-
+    private Button btnFiltroAnio;
+    private Button btnFiltroMes;
+    private Button btnBuscar;
+    private EditText inputFecha;
+    private Planta plantaSeleccionada;
+    private Button btnFiltroDia;
     private GPSHelper gpsHelper;
     private Usuario usuarioLogueado;
     private List<Planta> listaPlantas = new ArrayList<>();
@@ -56,6 +65,13 @@ public class ecoAvance_activity extends AppCompatActivity {
         txtHumedadSuelo = findViewById(R.id.txtHumedadSuelo);
         txtHumedadAmbiental = findViewById(R.id.txtHumedadAmbiental);
         txtGPS = findViewById(R.id.txtGPS);
+
+        // buttons busqueda
+        btnFiltroDia = findViewById(R.id.btnFiltroDia);
+        btnFiltroMes = findViewById(R.id.btnFiltroMes);
+        btnFiltroAnio = findViewById(R.id.btnFiltroAnio);
+        btnBuscar = findViewById(R.id.btnBuscar);
+        inputFecha = findViewById(R.id.inputFecha);
 
         // Nuevos graficos
         chartAmbiente = findViewById(R.id.chartAmbiente);
@@ -80,6 +96,37 @@ public class ecoAvance_activity extends AppCompatActivity {
 
         // Cargar usuario
         cargarUsuarioLogueado();
+
+        spinnerPlantas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Planta seleccionada y actualizar dashboard
+                plantaSeleccionada = listaPlantas.get(position);
+                actualizarDashboard(plantaSeleccionada);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+        // Filtros de rango
+        btnFiltroDia.setOnClickListener(v -> aplicarFiltro("dia"));
+        btnFiltroMes.setOnClickListener(v -> aplicarFiltro("mes"));
+        btnFiltroAnio.setOnClickListener(v -> aplicarFiltro("anio"));
+
+        // Filtro manual por fecha ingresada
+        btnBuscar.setOnClickListener(v -> {
+            String fechaTexto = inputFecha.getText().toString().trim();
+            if (fechaTexto.isEmpty()) {
+                Toast.makeText(this, "Ingrese una fecha válida", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            aplicarFiltroPersonalizado(fechaTexto);
+        });
+
+        Log.d("EcoAvanceDBG", "btnFiltroDia == null? " + (btnFiltroDia == null));
+        Log.d("EcoAvanceDBG", "btnFiltroMes == null? " + (btnFiltroMes == null));
+        Log.d("EcoAvanceDBG", "btnFiltroAnio == null? " + (btnFiltroAnio == null));
 
         //+-------------------------------------------------------------------------------------------+
     }
@@ -163,16 +210,25 @@ public class ecoAvance_activity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPlantas.setAdapter(adapter);
 
+        // Listener único
         spinnerPlantas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                actualizarDashboard(listaPlantas.get(position));
+                plantaSeleccionada = listaPlantas.get(position); // asignamos correctamente
+                actualizarDashboard(plantaSeleccionada);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
         });
+
+        // Opcional: seleccionar la primera planta por defecto
+        if (!listaPlantas.isEmpty()) {
+            plantaSeleccionada = listaPlantas.get(0);
+            actualizarDashboard(plantaSeleccionada);
+        }
     }
+
 
     //+-------------------------------------------------------------------------------------------+
     private List<String> obtenerNombresPlantas(List<Planta> plantas) {
@@ -203,6 +259,7 @@ public class ecoAvance_activity extends AppCompatActivity {
             humSueloEntries.add(new Entry(i++, (float) h.getValor()));
         }
 
+
         //+-------------------------------------------------------------------------------------------+
         // DataSets
         LineDataSet setTemp = new LineDataSet(tempEntries, "Temperatura (°C)");
@@ -231,5 +288,91 @@ public class ecoAvance_activity extends AppCompatActivity {
             txtHumedadAmbiental.setText(humAmbEntries.get(humAmbEntries.size() - 1).getY() + " %");
         if (!humSueloEntries.isEmpty())
             txtHumedadSuelo.setText(humSueloEntries.get(humSueloEntries.size() - 1).getY() + " %");
+
+
+    }
+
+    private void aplicarFiltro(String tipo) {
+        if (plantaSeleccionada == null) {
+            Toast.makeText(this, "Seleccione una planta primero", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Calendar limite = Calendar.getInstance();
+
+        switch (tipo) {
+            case "dia":
+                limite.add(Calendar.DAY_OF_YEAR, -1);
+                break;
+            case "mes":
+                limite.add(Calendar.MONTH, -1);
+                break;
+            case "anio":
+                limite.add(Calendar.YEAR, -1);
+                break;
+        }
+
+        filtrarYActualizar(plantaSeleccionada, limite.getTime());
+    }
+
+    private void aplicarFiltroPersonalizado(String fechaTexto) {
+        try {
+            Date fecha = new java.text.SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(fechaTexto);
+            filtrarYActualizar(plantaSeleccionada, fecha);
+        } catch (Exception e) {
+            Toast.makeText(this, "Formato inválido. Use dd/MM/yyyy", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void filtrarYActualizar(Planta planta, Date fechaMinima) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+
+        Map<String, Temperatura> tempFiltradas = new HashMap<>();
+        Map<String, HumedadAmbiental> humAmbFiltradas = new HashMap<>();
+        Map<String, HumedadSuelo> humSueloFiltradas = new HashMap<>();
+
+        for (Map.Entry<String, Temperatura> entry : planta.getTemperaturas().entrySet()) {
+            String fechaStr = entry.getValue().getFechaHora(); // ahora es String
+            try {
+                Date fecha = sdf.parse(fechaStr);
+                if (fecha != null && !fecha.before(fechaMinima)) {
+                    tempFiltradas.put(entry.getKey(), entry.getValue());
+                }
+            } catch (ParseException e) {
+                e.printStackTrace(); // opcional: maneja el error de parseo
+            }
+        }
+
+        for (Map.Entry<String, HumedadAmbiental> entry : planta.getHumedadesAmbientales().entrySet()) {
+            String fechaStr = entry.getValue().getFechaHora();
+            try {
+                Date fecha = sdf.parse(fechaStr);
+                if (fecha != null && fecha.after(fechaMinima)) {
+                    humAmbFiltradas.put(entry.getKey(), entry.getValue());
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (Map.Entry<String, HumedadSuelo> entry : planta.getHumedadesSuelo().entrySet()) {
+            String fechaStr = entry.getValue().getFechaHora();
+            try {
+                Date fecha = sdf.parse(fechaStr);
+                if (fecha != null && fecha.after(fechaMinima)) {
+                    humSueloFiltradas.put(entry.getKey(), entry.getValue());
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Planta plantaFiltrada = new Planta();
+        plantaFiltrada.setNombre(planta.getNombre());
+        plantaFiltrada.setTemperaturas(tempFiltradas);
+        plantaFiltrada.setHumedadesAmbientales(humAmbFiltradas);
+        plantaFiltrada.setHumedadesSuelo(humSueloFiltradas);
+
+        actualizarDashboard(plantaFiltrada);
     }
 }
