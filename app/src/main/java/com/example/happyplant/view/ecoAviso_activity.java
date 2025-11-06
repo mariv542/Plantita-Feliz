@@ -157,7 +157,7 @@ public class ecoAviso_activity extends AppCompatActivity {
                     if (alertasSnap.exists()) {
                         for (DataSnapshot alerta : alertasSnap.getChildren()) {
                             String mensaje = alerta.child("mensaje").getValue(String.class);
-                            String fecha = alerta.child("fechaHora").getValue(String.class);
+                            String fecha = alerta.child("fecha").getValue(String.class);
                             String nivel = alerta.child("nivel").getValue(String.class);
 
                             if (fecha == null || mensaje == null) continue;

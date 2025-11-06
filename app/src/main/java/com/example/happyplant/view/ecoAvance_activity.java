@@ -302,7 +302,10 @@ public class ecoAvance_activity extends AppCompatActivity {
 
         switch (tipo) {
             case "dia":
-                limite.add(Calendar.DAY_OF_YEAR, -1);
+                limite.set(Calendar.HOUR_OF_DAY, 0);
+                limite.set(Calendar.MINUTE, 0);
+                limite.set(Calendar.SECOND, 0);
+                limite.set(Calendar.MILLISECOND, 0);
                 break;
             case "mes":
                 limite.add(Calendar.MONTH, -1);
@@ -326,53 +329,76 @@ public class ecoAvance_activity extends AppCompatActivity {
 
     private void filtrarYActualizar(Planta planta, Date fechaMinima) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+        sdf.setTimeZone(TimeZone.getDefault());
 
         Map<String, Temperatura> tempFiltradas = new HashMap<>();
         Map<String, HumedadAmbiental> humAmbFiltradas = new HashMap<>();
         Map<String, HumedadSuelo> humSueloFiltradas = new HashMap<>();
 
+        // 🔹 Temperaturas
         for (Map.Entry<String, Temperatura> entry : planta.getTemperaturas().entrySet()) {
-            String fechaStr = entry.getValue().getFechaHora(); // ahora es String
+            String fechaStr = entry.getValue().getFechaHora();
+            if (fechaStr == null || fechaStr.trim().isEmpty()) {
+                Log.w("EcoAvance", "Temperatura sin fecha, saltando registro");
+                continue;
+            }
+
             try {
                 Date fecha = sdf.parse(fechaStr);
                 if (fecha != null && !fecha.before(fechaMinima)) {
                     tempFiltradas.put(entry.getKey(), entry.getValue());
                 }
             } catch (ParseException e) {
-                e.printStackTrace(); // opcional: maneja el error de parseo
+                Log.e("EcoAvance", "Error parseando fecha Temperatura: " + fechaStr);
             }
         }
 
+        // 🔹 Humedad Ambiental
         for (Map.Entry<String, HumedadAmbiental> entry : planta.getHumedadesAmbientales().entrySet()) {
             String fechaStr = entry.getValue().getFechaHora();
+            if (fechaStr == null || fechaStr.trim().isEmpty()) {
+                Log.w("EcoAvance", "Humedad Ambiental sin fecha, saltando registro");
+                continue;
+            }
+
             try {
                 Date fecha = sdf.parse(fechaStr);
-                if (fecha != null && fecha.after(fechaMinima)) {
+                if (fecha != null && !fecha.before(fechaMinima)) {
                     humAmbFiltradas.put(entry.getKey(), entry.getValue());
                 }
             } catch (ParseException e) {
-                e.printStackTrace();
+                Log.e("EcoAvance", "Error parseando fecha Humedad Ambiental: " + fechaStr);
             }
         }
 
+        // 🔹 Humedad Suelo
         for (Map.Entry<String, HumedadSuelo> entry : planta.getHumedadesSuelo().entrySet()) {
             String fechaStr = entry.getValue().getFechaHora();
+            if (fechaStr == null || fechaStr.trim().isEmpty()) {
+                Log.w("EcoAvance", "Humedad Suelo sin fecha, saltando registro");
+                continue;
+            }
+
             try {
                 Date fecha = sdf.parse(fechaStr);
-                if (fecha != null && fecha.after(fechaMinima)) {
+                if (fecha != null && !fecha.before(fechaMinima)) {
                     humSueloFiltradas.put(entry.getKey(), entry.getValue());
                 }
             } catch (ParseException e) {
-                e.printStackTrace();
+                Log.e("EcoAvance", "Error parseando fecha Humedad Suelo: " + fechaStr);
             }
         }
 
+        // 🔹 Crear planta filtrada
         Planta plantaFiltrada = new Planta();
         plantaFiltrada.setNombre(planta.getNombre());
         plantaFiltrada.setTemperaturas(tempFiltradas);
         plantaFiltrada.setHumedadesAmbientales(humAmbFiltradas);
         plantaFiltrada.setHumedadesSuelo(humSueloFiltradas);
 
+        // 🔹 Actualizar dashboard
         actualizarDashboard(plantaFiltrada);
     }
+
+
 }

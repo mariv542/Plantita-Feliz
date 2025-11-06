@@ -5,14 +5,14 @@ import java.time.LocalDateTime;
 public class HumedadAmbiental {
     private String plantaId;
     private double valor;
-    private String fechaHora;
+    private String fecha;
 
     public HumedadAmbiental() {}
 
-    public HumedadAmbiental(String plantaId, double valor, String fechaHora) {
+    public HumedadAmbiental(String plantaId, double valor, String fecha) {
         this.plantaId = plantaId;
         this.valor = valor;
-        this.fechaHora = fechaHora;
+        this.fecha = fecha;
     }
 
     public String getPlantaId() { return plantaId; }
@@ -21,6 +21,6 @@ public class HumedadAmbiental {
     public double getValor() { return valor; }
     public void setValor(double valor) { this.valor = valor; }
 
-    public String getFechaHora() { return fechaHora; }
-    public void setFechaHora(String fechaHora) { this.fechaHora = fechaHora; }
+    public String getFechaHora() { return fecha; }
+    public void setFechaHora(String fecha) { this.fecha = fecha; }
 }

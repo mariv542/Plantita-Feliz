@@ -7,10 +7,10 @@ public class Alerta {
     private String plantaId;
     private String tipo;
     private String mensaje;
-    private String fechaHora;
+    private String fecha;
 
     public Alerta(){}
-    public Alerta(String plantaId, String tipo, String mensaje, String fechaHora){
+    public Alerta(String plantaId, String tipo, String mensaje, String fecha){
         this.plantaId = plantaId;
         this.tipo = tipo;
         this.mensaje = mensaje;
@@ -23,6 +23,6 @@ public class Alerta {
     public String getMensaje(){return mensaje;}
     public void setMensaje(String mensaje){this.mensaje = mensaje;}
 
-    public String getFechaHora(){return fechaHora;}
-    public void setFechaHora(String fechaHora){this.fechaHora = fechaHora;}
+    public String getFechaHora(){return fecha;}
+    public void setFechaHora(String fecha){this.fecha = fecha;}
 }
