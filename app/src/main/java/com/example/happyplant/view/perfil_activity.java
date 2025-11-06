@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class perfil_activity extends AppCompatActivity {
 
     private FirebaseAuth auth;
-    private MaterialCardView card_InformacionPersonal, card_dispositivos, cardSoporte;
+    private MaterialCardView card_InformacionPersonal, card_dispositivos, cardSoporte, cardNotificaciones;
     private MaterialCardView card_logout;
     private ImageButton btnPerfil_regresar;
     private TextView txtGPS;
@@ -40,6 +40,7 @@ public class perfil_activity extends AppCompatActivity {
         card_InformacionPersonal = findViewById(R.id.card_perfil_informacionPersonal);
         card_dispositivos = findViewById(R.id.cardDispositivos);
         cardSoporte = findViewById(R.id.cardSoporte);
+        cardNotificaciones = findViewById(R.id.cardNotificaciones);
 
         // card log out
         card_logout = findViewById(R.id.card_perfil_Salir);
@@ -77,6 +78,25 @@ public class perfil_activity extends AppCompatActivity {
             startActivity(intent);
         });
         //+--------------------------------------------------------------------------------------------+
+        cardNotificaciones.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                // Desde Android 8 en adelante: va directo a la pantalla de notificaciones de la app
+                intent.setAction(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                intent.putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, getPackageName());
+            } else {
+                // Compatibilidad con versiones anteriores
+                intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
+                intent.setData(android.net.Uri.parse("package:" + getPackageName()));
+            }
+
+            try {
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(this, "No se pudo abrir la configuración de notificaciones", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void mostrarDialogoCerrarSesion() {

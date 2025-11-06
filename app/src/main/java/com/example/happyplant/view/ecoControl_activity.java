@@ -225,36 +225,63 @@ public class ecoControl_activity extends AppCompatActivity {
     private void actualizarSliders(Planta planta) {
         if (planta.getParametros() == null) return;
 
-        // humedad ambiental
+        // --- HUMEDAD AMBIENTAL ---
         if (planta.getParametros().getRangoHumedadAmbiental() != null) {
             float min = (float) planta.getParametros().getRangoHumedadAmbiental().getMinimo();
             float max = (float) planta.getParametros().getRangoHumedadAmbiental().getMaximo();
-            sliderAmbiental.setValues(min, max);
+
+            // Validar antes de aplicarlo
+            if (min < 0 || max > 100 || min > max) {
+                Log.w("EcoControl", "⚠️ Valores fuera de rango en Humedad Ambiental: min=" + min + ", max=" + max);
+                min = 0;
+                max = 100;
+            }
+
+            // Primero definir rango permitido
             sliderAmbiental.setValueFrom(0);
             sliderAmbiental.setValueTo(100);
-            labelAmbientalRange.setText("Min: " + min + "%   -   Max: " + max + "%");
+
+            // Luego aplicar los valores validados
+            sliderAmbiental.setValues(min, max);
+            labelAmbientalRange.setText(String.format("Min: %.0f%% - Max: %.0f%%", min, max));
         }
 
-        // Humedad
+        // --- HUMEDAD DE SUELO ---
         if (planta.getParametros().getRangoHumedadSuelo() != null) {
             float min = (float) planta.getParametros().getRangoHumedadSuelo().getMinimo();
             float max = (float) planta.getParametros().getRangoHumedadSuelo().getMaximo();
-            sliderHumidity.setValues(min, max);
+
+            if (min < 0 || max > 100 || min > max) {
+                Log.w("EcoControl", "⚠️ Valores fuera de rango en Humedad Suelo: min=" + min + ", max=" + max);
+                min = 0;
+                max = 100;
+            }
+
             sliderHumidity.setValueFrom(0);
             sliderHumidity.setValueTo(100);
-            labelHumidityRange.setText("Min: " + min + "%   -   Max: " + max + "%");
+            sliderHumidity.setValues(min, max);
+            labelHumidityRange.setText(String.format("Min: %.0f%% - Max: %.0f%%", min, max));
         }
 
-        // Temperatura
+        // --- TEMPERATURA ---
         if (planta.getParametros().getRangoTemperatura() != null) {
             float min = (float) planta.getParametros().getRangoTemperatura().getMinimo();
             float max = (float) planta.getParametros().getRangoTemperatura().getMaximo();
-            sliderTemperature.setValues(min, max);
+
+            if (min < 0 || max > 50 || min > max) {
+                Log.w("EcoControl", "⚠️ Valores fuera de rango en Temperatura: min=" + min + ", max=" + max);
+                min = 0;
+                max = 50;
+            }
+
             sliderTemperature.setValueFrom(0);
             sliderTemperature.setValueTo(50);
-            labelTemperatureRange.setText("Min: " + min + "°C   -   Max: " + max + "°C");
+            sliderTemperature.setValues(min, max);
+            labelTemperatureRange.setText(String.format("Min: %.0f°C - Max: %.0f°C", min, max));
         }
     }
+
+
 
     private void configurarListenersDeSliders() {
         sliderAmbiental.addOnChangeListener((slider, value, fromUser) -> {
