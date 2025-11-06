@@ -36,7 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ecoAvance_activity extends AppCompatActivity {
-    private TextView txtGPS, txtNombrePlanta, txtTemperatura, txtHumedadSuelo, txtHumedadAmbiental;
+    private TextView txtGPS, txtNombrePlanta, txtTemperatura, txtHumedadSuelo, txtHumedadAmbiental, txtNivelAgua;
     private Spinner spinnerPlantas;
     private ImageButton btnEcoAvanceRegresar;
     private LineChart chartAmbiente, chartSuelo;
@@ -64,6 +64,7 @@ public class ecoAvance_activity extends AppCompatActivity {
         txtTemperatura = findViewById(R.id.txtTemperatura);
         txtHumedadSuelo = findViewById(R.id.txtHumedadSuelo);
         txtHumedadAmbiental = findViewById(R.id.txtHumedadAmbiental);
+        txtNivelAgua = findViewById(R.id.txtNivelAgua);
         txtGPS = findViewById(R.id.txtGPS);
 
         // buttons busqueda
@@ -241,27 +242,46 @@ public class ecoAvance_activity extends AppCompatActivity {
     private void actualizarDashboard(Planta planta) {
         txtNombrePlanta.setText(planta.getNombre());
 
-        // 🔹 Datos de Firebase
+        // Listas de datos (para los gráficos)
         List<Entry> tempEntries = new ArrayList<>();
         List<Entry> humAmbEntries = new ArrayList<>();
         List<Entry> humSueloEntries = new ArrayList<>();
+        List<Entry> nivelAguaEntries = new ArrayList<>();
 
+        // Temperatura
         int i = 0;
-        for (Temperatura t : planta.getTemperaturas().values()) {
-            tempEntries.add(new Entry(i++, (float) t.getValor()));
-        }
-        i = 0;
-        for (HumedadAmbiental h : planta.getHumedadesAmbientales().values()) {
-            humAmbEntries.add(new Entry(i++, (float) h.getValor()));
-        }
-        i = 0;
-        for (HumedadSuelo h : planta.getHumedadesSuelo().values()) {
-            humSueloEntries.add(new Entry(i++, (float) h.getValor()));
+        if (planta.getTemperaturas() != null) {
+            for (Temperatura t : planta.getTemperaturas().values()) {
+                tempEntries.add(new Entry(i++, (float) t.getValor()));
+            }
         }
 
+        // Humedad ambiental
+        i = 0;
+        if (planta.getHumedadesAmbientales() != null) {
+            for (HumedadAmbiental h : planta.getHumedadesAmbientales().values()) {
+                humAmbEntries.add(new Entry(i++, (float) h.getValor()));
+            }
+        }
+
+        // Humedad del suelo
+        i = 0;
+        if (planta.getHumedadesSuelo() != null) {
+            for (HumedadSuelo h : planta.getHumedadesSuelo().values()) {
+                humSueloEntries.add(new Entry(i++, (float) h.getValor()));
+            }
+        }
+
+        // Nivel de agua
+        i = 0;
+        if (planta.getNivelesAgua() != null) {
+            for (NivelAgua n : planta.getNivelesAgua().values()) {
+                nivelAguaEntries.add(new Entry(i++, (float) n.getValor()));
+            }
+        }
 
         //+-------------------------------------------------------------------------------------------+
-        // DataSets
+        // Crear DataSets
         LineDataSet setTemp = new LineDataSet(tempEntries, "Temperatura (°C)");
         setTemp.setColor(ContextCompat.getColor(this, R.color.red));
         setTemp.setCircleColor(ContextCompat.getColor(this, R.color.red));
@@ -274,23 +294,67 @@ public class ecoAvance_activity extends AppCompatActivity {
         setHumSuelo.setColor(ContextCompat.getColor(this, R.color.green));
         setHumSuelo.setCircleColor(ContextCompat.getColor(this, R.color.green));
 
-        // Mostrar en los graficos
+        LineDataSet setNivelAgua = new LineDataSet(nivelAguaEntries, "Nivel de Agua (%)");
+        setNivelAgua.setColor(ContextCompat.getColor(this, R.color.red));
+        setNivelAgua.setCircleColor(ContextCompat.getColor(this, R.color.red));
+
+        //+-------------------------------------------------------------------------------------------+
+        // Asignar datasets a los gráficos
+        //  muestra cada conjunto de datos según diseño
         chartAmbiente.setData(new LineData(setTemp, setHumAmb));
-        chartSuelo.setData(new LineData(setHumSuelo));
+        chartSuelo.setData(new LineData(setHumSuelo, setNivelAgua));
 
         chartAmbiente.invalidate();
         chartSuelo.invalidate();
 
-        // Actualizar valores actuales
-        if (!tempEntries.isEmpty())
-            txtTemperatura.setText(tempEntries.get(tempEntries.size() - 1).getY() + " °C");
-        if (!humAmbEntries.isEmpty())
-            txtHumedadAmbiental.setText(humAmbEntries.get(humAmbEntries.size() - 1).getY() + " %");
-        if (!humSueloEntries.isEmpty())
-            txtHumedadSuelo.setText(humSueloEntries.get(humSueloEntries.size() - 1).getY() + " %");
+        //+-------------------------------------------------------------------------------------------+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
 
+        if (planta.getTemperaturas() != null && !planta.getTemperaturas().isEmpty()) {
+            Temperatura ultimaTemp = Collections.max(planta.getTemperaturas().values(), (t1, t2) -> {
+                try {
+                    return sdf.parse(t1.getFecha()).compareTo(sdf.parse(t2.getFecha()));
+                } catch (Exception e) {
+                    return 0;
+                }
+            });
+            txtTemperatura.setText(String.format(Locale.getDefault(), "%.1f °C", ultimaTemp.getValor()));
+        }
 
+        if (planta.getHumedadesAmbientales() != null && !planta.getHumedadesAmbientales().isEmpty()) {
+            HumedadAmbiental ultimaHumAmb = Collections.max(planta.getHumedadesAmbientales().values(), (h1, h2) -> {
+                try {
+                    return sdf.parse(h1.getFecha()).compareTo(sdf.parse(h2.getFecha()));
+                } catch (Exception e) {
+                    return 0;
+                }
+            });
+            txtHumedadAmbiental.setText(String.format(Locale.getDefault(), "%.1f %%", ultimaHumAmb.getValor()));
+        }
+
+        if (planta.getHumedadesSuelo() != null && !planta.getHumedadesSuelo().isEmpty()) {
+            HumedadSuelo ultimaHumSuelo = Collections.max(planta.getHumedadesSuelo().values(), (h1, h2) -> {
+                try {
+                    return sdf.parse(h1.getFecha()).compareTo(sdf.parse(h2.getFecha()));
+                } catch (Exception e) {
+                    return 0;
+                }
+            });
+            txtHumedadSuelo.setText(String.format(Locale.getDefault(), "%.1f %%", ultimaHumSuelo.getValor()));
+        }
+
+        if (planta.getNivelesAgua() != null && !planta.getNivelesAgua().isEmpty()) {
+            NivelAgua ultimoAgua = Collections.max(planta.getNivelesAgua().values(), (n1, n2) -> {
+                try {
+                    return sdf.parse(n1.getFecha()).compareTo(sdf.parse(n2.getFecha()));
+                } catch (Exception e) {
+                    return 0;
+                }
+            });
+            txtNivelAgua.setText(String.format(Locale.getDefault(), "%.1f %%", ultimoAgua.getValor()));
+        }
     }
+
 
     private void aplicarFiltro(String tipo) {
         if (plantaSeleccionada == null) {
@@ -334,12 +398,14 @@ public class ecoAvance_activity extends AppCompatActivity {
         Map<String, Temperatura> tempFiltradas = new HashMap<>();
         Map<String, HumedadAmbiental> humAmbFiltradas = new HashMap<>();
         Map<String, HumedadSuelo> humSueloFiltradas = new HashMap<>();
+        Map<String, NivelAgua> nivelAguaFiltrados = new HashMap<>();
 
         // 🔹 Temperaturas
         for (Map.Entry<String, Temperatura> entry : planta.getTemperaturas().entrySet()) {
-            String fechaStr = entry.getValue().getFechaHora();
+            String fechaStr = entry.getValue().getFecha();
+
             if (fechaStr == null || fechaStr.trim().isEmpty()) {
-                Log.w("EcoAvance", "Temperatura sin fecha, saltando registro");
+                Log.w("EcoAvance", "Temperatura sin fecha -> " + entry.getKey());
                 continue;
             }
 
@@ -349,15 +415,16 @@ public class ecoAvance_activity extends AppCompatActivity {
                     tempFiltradas.put(entry.getKey(), entry.getValue());
                 }
             } catch (ParseException e) {
-                Log.e("EcoAvance", "Error parseando fecha Temperatura: " + fechaStr);
+                Log.e("EcoAvance", "Error al parsear fecha Temperatura: " + fechaStr, e);
             }
         }
 
         // 🔹 Humedad Ambiental
         for (Map.Entry<String, HumedadAmbiental> entry : planta.getHumedadesAmbientales().entrySet()) {
-            String fechaStr = entry.getValue().getFechaHora();
+            String fechaStr = entry.getValue().getFecha();
+
             if (fechaStr == null || fechaStr.trim().isEmpty()) {
-                Log.w("EcoAvance", "Humedad Ambiental sin fecha, saltando registro");
+                Log.w("EcoAvance", "Humedad Ambiental sin fecha -> " + entry.getKey());
                 continue;
             }
 
@@ -367,15 +434,16 @@ public class ecoAvance_activity extends AppCompatActivity {
                     humAmbFiltradas.put(entry.getKey(), entry.getValue());
                 }
             } catch (ParseException e) {
-                Log.e("EcoAvance", "Error parseando fecha Humedad Ambiental: " + fechaStr);
+                Log.e("EcoAvance", "Error al parsear fecha Humedad Ambiental: " + fechaStr, e);
             }
         }
 
         // 🔹 Humedad Suelo
         for (Map.Entry<String, HumedadSuelo> entry : planta.getHumedadesSuelo().entrySet()) {
-            String fechaStr = entry.getValue().getFechaHora();
+            String fechaStr = entry.getValue().getFecha();
+
             if (fechaStr == null || fechaStr.trim().isEmpty()) {
-                Log.w("EcoAvance", "Humedad Suelo sin fecha, saltando registro");
+                Log.w("EcoAvance", "Humedad Suelo sin fecha -> " + entry.getKey());
                 continue;
             }
 
@@ -385,7 +453,28 @@ public class ecoAvance_activity extends AppCompatActivity {
                     humSueloFiltradas.put(entry.getKey(), entry.getValue());
                 }
             } catch (ParseException e) {
-                Log.e("EcoAvance", "Error parseando fecha Humedad Suelo: " + fechaStr);
+                Log.e("EcoAvance", "Error al parsear fecha Humedad Suelo: " + fechaStr, e);
+            }
+        }
+
+        // 🔹 Nivel de Agua (si existe)
+        if (planta.getNivelesAgua() != null) {
+            for (Map.Entry<String, NivelAgua> entry : planta.getNivelesAgua().entrySet()) {
+                String fechaStr = entry.getValue().getFecha();
+
+                if (fechaStr == null || fechaStr.trim().isEmpty()) {
+                    Log.w("EcoAvance", "Nivel Agua sin fecha -> " + entry.getKey());
+                    continue;
+                }
+
+                try {
+                    Date fecha = sdf.parse(fechaStr);
+                    if (fecha != null && !fecha.before(fechaMinima)) {
+                        nivelAguaFiltrados.put(entry.getKey(), entry.getValue());
+                    }
+                } catch (ParseException e) {
+                    Log.e("EcoAvance", "Error al parsear fecha Nivel Agua: " + fechaStr, e);
+                }
             }
         }
 
@@ -395,6 +484,12 @@ public class ecoAvance_activity extends AppCompatActivity {
         plantaFiltrada.setTemperaturas(tempFiltradas);
         plantaFiltrada.setHumedadesAmbientales(humAmbFiltradas);
         plantaFiltrada.setHumedadesSuelo(humSueloFiltradas);
+        plantaFiltrada.setNivelesAgua(nivelAguaFiltrados);
+
+        Log.d("EcoAvance", "Filtrado completado → Temp: " + tempFiltradas.size()
+                + " | HumAmb: " + humAmbFiltradas.size()
+                + " | HumSuelo: " + humSueloFiltradas.size()
+                + " | Agua: " + nivelAguaFiltrados.size());
 
         // 🔹 Actualizar dashboard
         actualizarDashboard(plantaFiltrada);

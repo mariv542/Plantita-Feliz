@@ -1,8 +1,5 @@
 package com.example.happyplant.model;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 public class Alerta {
     private String plantaId;
     private String tipo;
@@ -14,6 +11,7 @@ public class Alerta {
         this.plantaId = plantaId;
         this.tipo = tipo;
         this.mensaje = mensaje;
+        this.fecha = fecha;
     }
 
     public String getPlantaId(){return plantaId;}
@@ -23,6 +21,6 @@ public class Alerta {
     public String getMensaje(){return mensaje;}
     public void setMensaje(String mensaje){this.mensaje = mensaje;}
 
-    public String getFechaHora(){return fecha;}
-    public void setFechaHora(String fecha){this.fecha = fecha;}
+    public String getFecha(){return fecha;}
+    public void setFecha(String fecha){this.fecha = fecha;}
 }

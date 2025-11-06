@@ -1,24 +1,24 @@
 package com.example.happyplant.model;
 
-import java.time.LocalDateTime;
-
 public class NivelAgua {
     private String plantaId;
-    private double litros;
+    private double valor;
     private String fecha;
+    public NivelAgua() {}
 
-    public NivelAgua (){}
-    public NivelAgua(String plantaId, double litros, String fecha){
+    public NivelAgua(double valor, String fecha, String plantaId) {
         this.plantaId = plantaId;
-        this.litros = litros;
+        this.valor = valor;
         this.fecha = fecha;
     }
 
-    public String getPlantaId(){ return  plantaId;}
-    public void setPlantaId(String plantaId) {this.plantaId = plantaId;}
+    public String getPlantaId(){return plantaId;}
+    public void setPlantaId(String plantaId){this.plantaId = plantaId;}
+    public double getValor() {return valor;}
 
-    public double getLitros(){ return litros;}
-    public void setLitros(double litros){this.litros = litros;}
-    public String getFechaHora(){return fecha;}
-    public void setFechaHora(String fecha) { this.fecha = fecha;}
+    public void setValor(double valor) {this.valor = valor;}
+
+    public String getFecha() {return fecha;}
+
+    public void setFecha(String fecha) {this.fecha = fecha;}
 }

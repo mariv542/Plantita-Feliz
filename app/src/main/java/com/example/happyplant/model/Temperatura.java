@@ -1,7 +1,5 @@
 package com.example.happyplant.model;
 
-import java.time.LocalDateTime;
-
 public class Temperatura {
     private String plantId;
     private double valor;
@@ -21,7 +19,7 @@ public class Temperatura {
     public double getValor() { return  valor; }
     public void getValor(double valor) { this.valor = valor; }
 
-    public String getFechaHora() { return fecha; }
-    public void setFechaHora(String fecha) { this.fecha = fecha; }
+    public String getFecha() { return fecha; }
+    public void setFecha(String fecha) { this.fecha = fecha; }
 
 }
