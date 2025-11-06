@@ -147,7 +147,7 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\ma
 		ADDED from C:\Users\marie\Desktop\Happy Plant\Plantita-Feliz\HappyPlantAndroid\app\src\main\AndroidManifest.xml:13:9-48
 	android:dataExtractionRules
 		ADDED from C:\Users\marie\Desktop\Happy Plant\Plantita-Feliz\HappyPlantAndroid\app\src\main\AndroidManifest.xml:7:9-65
-activity#com.example.happyplant.MainActivity
+activity#com.example.happyplant.view.MainActivity
 ADDED from C:\Users\marie\Desktop\Happy Plant\Plantita-Feliz\HappyPlantAndroid\app\src\main\AndroidManifest.xml:16:9-23:20
 	android:exported
 		ADDED from C:\Users\marie\Desktop\Happy Plant\Plantita-Feliz\HappyPlantAndroid\app\src\main\AndroidManifest.xml:18:13-36

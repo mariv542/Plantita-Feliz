@@ -39,7 +39,7 @@
 
         <!-- Activity principal -->
         <activity
-            android:name="com.example.happyplant.MainActivity"
+            android:name="com.example.happyplant.view.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

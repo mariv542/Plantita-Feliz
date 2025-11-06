@@ -1,4 +1,4 @@
-package com.example.happyplant;
+package com.example.happyplant.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.widget.Button;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.happyplant.view.login_activity;
+import com.example.happyplant.R;
 
 public class MainActivity extends AppCompatActivity {
 
