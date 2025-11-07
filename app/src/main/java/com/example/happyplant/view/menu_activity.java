@@ -28,10 +28,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class menu_activity extends AppCompatActivity {
 
@@ -158,33 +162,80 @@ public class menu_activity extends AppCompatActivity {
         plantasRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    Map<String, Planta> mapPlantas = new HashMap<>();
+                if (!snapshot.exists()) {
+                    Toast.makeText(menu_activity.this, "No hay plantas registradas para este usuario", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-                    for (DataSnapshot plantaSnap : snapshot.getChildren()) {
-                        Planta planta = plantaSnap.getValue(Planta.class);
-                        if (planta == null) continue;
-                        planta.setId(plantaSnap.getKey());
-                        planta.cargarDatosDesdeSnapshot(plantaSnap);
+                Map<String, Planta> mapPlantas = new HashMap<>();
 
-                        mapPlantas.put(planta.getId(), planta);
+                for (DataSnapshot plantaSnap : snapshot.getChildren()) {
+                    Planta planta = plantaSnap.getValue(Planta.class);
+                    if (planta == null) continue;
+
+                    planta.setId(plantaSnap.getKey());
+                    planta.cargarDatosDesdeSnapshot(plantaSnap); // Carga temperaturas, humedades, etc.
+
+                    mapPlantas.put(planta.getId(), planta);
+                }
+
+                usuarioLogueado.setPlantas(mapPlantas);
+
+                // --------------------------------------------------------
+                // **BUSCAR LA PLANTA "Rosarito"**
+                // --------------------------------------------------------
+                Planta plantaRosarito = null;
+
+                for (Planta p : mapPlantas.values()) {
+                    if (p.getNombre() != null && p.getNombre().equalsIgnoreCase("Rosarito")) {
+                        plantaRosarito = p;
+                        break;
                     }
+                }
 
-                    usuarioLogueado.setPlantas(mapPlantas);
+                if (plantaRosarito == null) {
+                    Toast.makeText(menu_activity.this, "No se encontró la planta Rosarito", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-                    // Seleccionar la primera planta automáticamente
-                    if (!mapPlantas.isEmpty()) {
-                        Planta primeraPlanta = mapPlantas.values().iterator().next();
+                Log.d("MenuActivity", "🌱 Planta detectada: Rosarito");
 
-                        if (primeraPlanta.getHumedadesSuelo() != null && !primeraPlanta.getHumedadesSuelo().isEmpty()) {
-                            Map.Entry<String, HumedadSuelo> entrada =
-                                    primeraPlanta.getHumedadesSuelo().entrySet().iterator().next();
-                            double humedadActual = entrada.getValue().getValor();
-                            actualizarImagenHumedad(humedadActual, primeraPlanta);
+                // --------------------------------------------------------
+                // **OBTENER LA HUMEDAD MÁS RECIENTE**
+                // --------------------------------------------------------
+                if (plantaRosarito.getHumedadesSuelo() != null && !plantaRosarito.getHumedadesSuelo().isEmpty()) {
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+                    sdf.setTimeZone(TimeZone.getDefault());
+
+                    HumedadSuelo ultimoRegistro = null;
+                    Date fechaMasReciente = null;
+
+                    for (HumedadSuelo humedad : plantaRosarito.getHumedadesSuelo().values()) {
+                        if (humedad.getFecha() == null) continue;
+
+                        try {
+                            Date fecha = sdf.parse(humedad.getFecha());
+                            if (fechaMasReciente == null || fecha.after(fechaMasReciente)) {
+                                fechaMasReciente = fecha;
+                                ultimoRegistro = humedad;
+                            }
+                        } catch (Exception e) {
+                            Log.e("MenuActivity", "❗ Error parseando fecha humedad: " + humedad.getFecha(), e);
                         }
                     }
+
+                    if (ultimoRegistro != null) {
+                        double humedadActual = ultimoRegistro.getValor();
+                        Log.d("MenuActivity", "💧 Última humedad registrada: " + humedadActual + " (" + ultimoRegistro.getFecha() + ")");
+
+                        actualizarImagenHumedad(humedadActual, plantaRosarito);
+                    } else {
+                        Toast.makeText(menu_activity.this, "No se pudo determinar la última humedad de Rosarito", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
-                    Toast.makeText(menu_activity.this, "No hay plantas registradas para este usuario", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(menu_activity.this, "La planta Rosarito no tiene registros de humedad.", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -194,15 +245,20 @@ public class menu_activity extends AppCompatActivity {
             }
         });
     }
-        private void actualizarImagenHumedad(double humedadActual, Planta planta) {
+
+
+    private void actualizarImagenHumedad(double humedadActual, Planta planta) {
             if (planta == null || planta.getParametros() == null || planta.getParametros().getRangoHumedadSuelo() == null) return;
 
+            Log.d("MenuActivity", "🌱 Planta seleccionada: " + planta.getNombre());
+            Log.d("MenuActivity", "💧 Humedad actual: " + humedadActual);
             Rango rango = planta.getParametros().getRangoHumedadSuelo();
-
+            Log.d("MenuActivity", "🔽 Rango mínimo permitido: " + rango.getMinimo());
+            Log.d("MenuActivity", "🔼 Rango máximo permitido: " + rango.getMaximo());
             if (humedadActual < rango.getMinimo()) {
-                imgPlanta.setImageResource(R.drawable.planta_normal); // Falta humedad
+                imgPlanta.setImageResource(R.drawable.planta_triste); // Falta exeso de humedad
             } else if (humedadActual > rango.getMaximo()) {
-                imgPlanta.setImageResource(R.drawable.planta_triste); // Exceso de humedad
+                imgPlanta.setImageResource(R.drawable.planta_normal); // Fañta de humedad
             } else {
                 imgPlanta.setImageResource(R.drawable.planta_feliz); // Dentro del rango
             }

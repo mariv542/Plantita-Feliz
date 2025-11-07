@@ -251,14 +251,14 @@ public class ecoControl_activity extends AppCompatActivity {
             float min = (float) planta.getParametros().getRangoHumedadSuelo().getMinimo();
             float max = (float) planta.getParametros().getRangoHumedadSuelo().getMaximo();
 
-            if (min < 0 || max > 100 || min > max) {
+            if (min < 0 || max > 1000 || min > max) {
                 Log.w("EcoControl", "⚠️ Valores fuera de rango en Humedad Suelo: min=" + min + ", max=" + max);
                 min = 0;
-                max = 100;
+                max = 1000;
             }
 
             sliderHumidity.setValueFrom(0);
-            sliderHumidity.setValueTo(100);
+            sliderHumidity.setValueTo(1000);
             sliderHumidity.setValues(min, max);
             labelHumidityRange.setText(String.format("Min: %.0f%% - Max: %.0f%%", min, max));
         }
