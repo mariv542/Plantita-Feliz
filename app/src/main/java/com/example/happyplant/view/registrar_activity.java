@@ -12,11 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.happyplant.R;
 import com.example.happyplant.utils.GPSHelper;
+import com.example.happyplant.utils.appLogger;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
-import com.example.happyplant.model.Usuario;
 import com.example.happyplant.repository.UsuarioRepository;
-
 
 public class registrar_activity extends AppCompatActivity {
 
@@ -26,20 +25,30 @@ public class registrar_activity extends AppCompatActivity {
     private TextView txtLogin, txtGPS;
     private FirebaseAuth auth;
     private GPSHelper gpsHelper;
-    ImageButton btnRegistrar_regresar;
-
+    private ImageButton btnRegistrar_regresar;
+    private appLogger appLogger; // logger
 
     @Override
-    protected void onCreate(Bundle saveInstanceState) {
-        super.onCreate(saveInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.registrar_usuario);
 
+        // Inicializar appLogger con UID o "anonimo"
+        String uid = "anonimo";
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
+        appLogger = new appLogger(uid);
+
+        // Log: abrir pantalla
+        appLogger.logEvent("abrirPantalla", "Usuario abrió registrar_activity");
+
         usuarioRepo = new UsuarioRepository();
-        //+--------------------------------------------------------------------------------------------+
-        //Boton para regresar a Login
+
+        // Botón para regresar a Login
         btnRegistrar_regresar = findViewById(R.id.btn_registrar_regresar);
 
-        //Para GPS
+        // Para GPS
         txtGPS = findViewById(R.id.txtGPS);
         gpsHelper = new GPSHelper(this);
         gpsHelper.obtenerUbicacion((lat, lon) -> {
@@ -47,7 +56,7 @@ public class registrar_activity extends AppCompatActivity {
             txtGPS.setText("Ciudad: " + ciudad);
         });
 
-        //Campos de registros
+        // Campos de registro
         etEmail = findViewById(R.id.etEmail);
         etPass  = findViewById(R.id.etPass);
         etConfirmPass = findViewById(R.id.etConfirmPass);
@@ -56,20 +65,24 @@ public class registrar_activity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        btnRegister.setOnClickListener(v -> registrar());
+        // Click registrar
+        btnRegister.setOnClickListener(v -> {
+            appLogger.logEvent("clickBoton", "Presionó btnRegister");
+            registrar();
+        });
 
+        // Click login
         txtLogin.setOnClickListener(v -> {
+            appLogger.logEvent("clickBoton", "Presionó txtLogin");
             startActivity(new Intent(registrar_activity.this, login_activity.class));
             finish();
         });
 
-        //Para poder regresar a Login
+        // Click regresar
         btnRegistrar_regresar.setOnClickListener(v -> {
-            // Creamos un Intent para ir a menu_activity
+            appLogger.logEvent("clickBoton", "Presionó btnRegistrar_regresar");
             Intent intent = new Intent(registrar_activity.this, login_activity.class);
             startActivity(intent);
-            // para serrar la pestaña dde login y que no vuelva atras dar finish:
-            // finish();
         });
     }
 
@@ -80,14 +93,13 @@ public class registrar_activity extends AppCompatActivity {
 
         if (!validar(email, pass, confirmPass)) return;
 
-        // Nombre por defecto
         String nombreDefault = "Usuario";
 
-        // Llamada al repository con callback
         usuarioRepo.registrarUsuarioConAuth(nombreDefault, email, pass,
                 new UsuarioRepository.RegistroCallback() {
                     @Override
                     public void onSuccess() {
+                        appLogger.logEvent("registroExitoso", "Usuario registrado correctamente: " + email);
                         Toast.makeText(registrar_activity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(registrar_activity.this, login_activity.class));
                         finish();
@@ -95,6 +107,7 @@ public class registrar_activity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(String error) {
+                        appLogger.logEvent("registroFallido", "Error al registrar usuario: " + error);
                         Toast.makeText(registrar_activity.this, "Error: " + error, Toast.LENGTH_LONG).show();
                     }
                 });

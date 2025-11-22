@@ -17,15 +17,11 @@ import com.example.happyplant.R;
 import com.example.happyplant.model.Usuario;
 import com.example.happyplant.repository.PlantaRepository;
 import com.example.happyplant.utils.GPSHelper;
+import com.example.happyplant.utils.appLogger;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.*;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -44,15 +40,23 @@ public class ecoAviso_activity extends AppCompatActivity {
     private Button btnHoy, btnPasado;
     private LinearLayout tabs;
 
+    private appLogger appLogger; // logger
     private static final String TAG = "EcoAviso";
 
     // Estado del filtro actual
     private boolean mostrandoHoy = true;
 
     @Override
-    protected void onCreate(Bundle saveInstanceState) {
-        super.onCreate(saveInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.eco_aviso);
+
+        // Inicializar appLogger con UID o "anonimo"
+        String uid = "anonimo";
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) uid = firebaseUser.getUid();
+        appLogger = new appLogger(uid);
+        appLogger.logEvent("abrirPantalla", "Usuario abrió ecoAviso_activity");
 
         txtGPS = findViewById(R.id.txtGPS);
         contenedorAlertas = findViewById(R.id.contenedorAlertas);
@@ -65,17 +69,19 @@ public class ecoAviso_activity extends AppCompatActivity {
         gpsHelper.obtenerUbicacion((lat, lon) -> {
             String ciudad = gpsHelper.obtenerCiudad(lat, lon, this);
             txtGPS.setText("Ciudad: " + ciudad);
+            appLogger.logEvent("gpsObtenido", "Ciudad detectada: " + ciudad);
         });
 
         ImageButton btnEcoAviso_regresar = findViewById(R.id.btn_ecoAviso_regresar);
         btnEcoAviso_regresar.setOnClickListener(v -> {
+            appLogger.logEvent("clickBoton", "Presionó btnEcoAviso_regresar");
             startActivity(new Intent(ecoAviso_activity.this, menu_activity.class));
         });
 
         auth = FirebaseAuth.getInstance();
         usuarioRepo = FirebaseDatabase.getInstance().getReference();
 
-        // 👉 configurar listeners de los botones
+        // Configurar tabs con logs
         configurarTabs();
 
         // Cargar datos
@@ -87,6 +93,7 @@ public class ecoAviso_activity extends AppCompatActivity {
             mostrandoHoy = true;
             btnHoy.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.lime_green));
             btnPasado.setBackgroundTintList(ContextCompat.getColorStateList(this, android.R.color.darker_gray));
+            appLogger.logEvent("clickBoton", "Seleccionó tab Hoy");
             cargarAlertasUsuario(usuarioLogueado != null ? usuarioLogueado.getId() : null);
         });
 
@@ -94,6 +101,7 @@ public class ecoAviso_activity extends AppCompatActivity {
             mostrandoHoy = false;
             btnHoy.setBackgroundTintList(ContextCompat.getColorStateList(this, android.R.color.darker_gray));
             btnPasado.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.orange_past));
+            appLogger.logEvent("clickBoton", "Seleccionó tab Pasado");
             cargarAlertasUsuario(usuarioLogueado != null ? usuarioLogueado.getId() : null);
         });
     }
@@ -102,6 +110,7 @@ public class ecoAviso_activity extends AppCompatActivity {
         FirebaseUser firebaseUser = auth.getCurrentUser();
         if (firebaseUser == null) {
             Toast.makeText(this, "No hay sesión iniciada", Toast.LENGTH_SHORT).show();
+            appLogger.logEvent("errorUsuario", "No hay sesión iniciada");
             return;
         }
 
@@ -118,19 +127,24 @@ public class ecoAviso_activity extends AppCompatActivity {
                                 usuarioLogueado = userSnap.getValue(Usuario.class);
                                 usuarioLogueado.setId(userSnap.getKey());
 
+                                appLogger.logEvent("cargarUsuario", "Usuario logueado: " + usuarioLogueado.getEmail());
+
                                 plantaRepo = new PlantaRepository(usuarioLogueado.getId());
                                 Toast.makeText(ecoAviso_activity.this, "Usuario cargado correctamente.", Toast.LENGTH_SHORT).show();
 
                                 cargarAlertasUsuario(usuarioLogueado.getId());
+                                break;
                             }
                         } else {
                             Toast.makeText(ecoAviso_activity.this, "Usuario no encontrado.", Toast.LENGTH_SHORT).show();
+                            appLogger.logEvent("errorUsuario", "No se encontró usuario con email: " + email);
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Log.e(TAG, "Error al consultar usuario", error.toException());
+                        appLogger.logEvent("errorBD", "Error al consultar usuario: " + error.getMessage());
                     }
                 });
     }
@@ -149,6 +163,8 @@ public class ecoAviso_activity extends AppCompatActivity {
                 contenedorAlertas.removeAllViews();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 String fechaHoy = sdf.format(Calendar.getInstance().getTime());
+
+                int alertasMostradas = 0;
 
                 for (DataSnapshot plantaSnap : snapshot.getChildren()) {
                     String nombrePlanta = plantaSnap.child("nombre").getValue(String.class);
@@ -180,21 +196,25 @@ public class ecoAviso_activity extends AppCompatActivity {
                                 txt.setBackgroundColor(getResources().getColor(R.color.green_transparent));
 
                             contenedorAlertas.addView(txt);
+                            alertasMostradas++;
                         }
                     }
                 }
 
-                if (contenedorAlertas.getChildCount() == 0) {
+                if (alertasMostradas == 0) {
                     TextView txt = new TextView(ecoAviso_activity.this);
                     txt.setText(mostrandoHoy ? "No hay alertas de hoy 🌞" : "No hay alertas pasadas 📅");
                     txt.setPadding(20, 20, 20, 20);
                     contenedorAlertas.addView(txt);
                 }
+
+                appLogger.logEvent("alertasCargadas", "Se mostraron " + alertasMostradas + " alertas (mostrandoHoy=" + mostrandoHoy + ")");
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e(TAG, "Error al leer alertas: " + error.getMessage());
+                appLogger.logEvent("errorBD", "Error al leer alertas: " + error.getMessage());
             }
         });
     }

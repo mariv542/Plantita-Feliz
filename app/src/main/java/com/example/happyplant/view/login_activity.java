@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.happyplant.R;
 import com.example.happyplant.utils.GPSHelper;
+import com.example.happyplant.utils.appLogger;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,15 +25,25 @@ public class login_activity extends AppCompatActivity {
     private TextView txtLogin_registrar, txtGPS;
     private FirebaseAuth auth;
     private GPSHelper gpsHelper;
-
+    private appLogger appLogger; // clase appLogger con variable appLogger
 
     @Override
     protected void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
         setContentView(R.layout.login);
+
+        // Inicializar appLogger con UID o "anonimo"
+        String uid = "anonimo";
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
+        appLogger = new appLogger(uid);
+
+        // Log: abrir pantalla
+        appLogger.logEvent("abrirPantalla", "Usuario abrió login_activity");
+
         //GPS
         txtGPS = findViewById(R.id.txtGPS);
-
         gpsHelper = new GPSHelper(this);
         gpsHelper.obtenerUbicacion((lat, lon) -> {
             String ciudad = gpsHelper.obtenerCiudad(lat, lon, this);
@@ -43,14 +54,20 @@ public class login_activity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         //Campos de login
-        etEmail = findViewById(R.id.inputCorreo).findViewById(R.id.etEmail); // si tienes TextInputEditText dentro
+        etEmail = findViewById(R.id.inputCorreo).findViewById(R.id.etEmail);
         etPass  = findViewById(R.id.inputPassword).findViewById(R.id.etPass);
         btnLogin_iniciar = findViewById(R.id.btn_Login_iniciar);
         txtLogin_registrar = findViewById(R.id.txt_login_registrar);
 
-        btnLogin_iniciar.setOnClickListener(v -> iniciarSesion());
+        // Log y acción: click iniciar sesión
+        btnLogin_iniciar.setOnClickListener(v -> {
+            appLogger.logEvent("clickBoton", "Presionó btn_Login_iniciar");
+            iniciarSesion();
+        });
 
+        // Log y acción: click registrar
         txtLogin_registrar.setOnClickListener(v -> {
+            appLogger.logEvent("clickBoton", "Presionó txt_login_registrar");
             Intent intent = new Intent(login_activity.this, registrar_activity.class);
             startActivity(intent);
         });
@@ -61,8 +78,21 @@ public class login_activity extends AppCompatActivity {
         super.onStart();
         FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
+            appLogger.logEvent("loginExitoso", "Usuario ya logueado");
             irAMenu();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        appLogger.logEvent("pantallaVisible", "Usuario está en login_activity");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        appLogger.logEvent("pantallaOculta", "Usuario salió de login_activity");
     }
 
     private void iniciarSesion() {
@@ -74,16 +104,17 @@ public class login_activity extends AppCompatActivity {
         auth.signInWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        appLogger.logEvent("loginExitoso", "Usuario inició sesión correctamente");
                         Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show();
 
                         FirebaseUser user = auth.getCurrentUser();
                         if (user != null) {
-                            // 🔥 Obtener token FCM y guardarlo en la BD
                             registrarTokenFCM(user.getUid());
                         }
 
                         irAMenu();
                     } else {
+                        appLogger.logEvent("loginFallido", "Error: Usuario no registrado o contraseña incorrecta");
                         Toast.makeText(this, "Error: Usuario no registrado", Toast.LENGTH_LONG).show();
                     }
                 });
@@ -128,7 +159,7 @@ public class login_activity extends AppCompatActivity {
         startActivity(new Intent(this, menu_activity.class));
         finish();
     }
-    // Cambiar a MainActivitytodo cuando este listo el avance 2
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -137,5 +168,4 @@ public class login_activity extends AppCompatActivity {
             txtGPS.setText("Ciudad: " + ciudad);
         });
     }
-
 }

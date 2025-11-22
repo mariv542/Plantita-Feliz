@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.happyplant.R;
 import com.example.happyplant.utils.GPSHelper;
+import com.example.happyplant.utils.appLogger;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -23,80 +24,86 @@ public class perfil_activity extends AppCompatActivity {
     private ImageButton btnPerfil_regresar;
     private TextView txtGPS;
     private GPSHelper gpsHelper;
+    private appLogger appLogger;
+
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.eco_perfil);
-        //+--------------------------------------------------------------------------------------------+
 
-        //firebase
+        // Inicializar Firebase y AppLogger
         auth = FirebaseAuth.getInstance();
+        String uid = (auth.getCurrentUser() != null) ? auth.getCurrentUser().getUid() : "anonimo";
+        appLogger = new appLogger(uid);
+        appLogger.logEvent("abrirPantalla", "Usuario abrió perfil_activity");
 
-        btnPerfil_regresar = findViewById(R.id.btn_perfil_regresar);
-        //Para GPS
+        // Inicializar vistas
         txtGPS = findViewById(R.id.txtGPS);
-
-        // card informacion personal
+        btnPerfil_regresar = findViewById(R.id.btn_perfil_regresar);
         card_InformacionPersonal = findViewById(R.id.card_perfil_informacionPersonal);
         card_dispositivos = findViewById(R.id.cardDispositivos);
         cardSoporte = findViewById(R.id.cardSoporte);
         cardNotificaciones = findViewById(R.id.cardNotificaciones);
-
-        // card log out
         card_logout = findViewById(R.id.card_perfil_Salir);
 
+        // GPS
         gpsHelper = new GPSHelper(this);
-        //+--------------------------------------------------------------------------------------------+
-
-        card_logout.setOnClickListener(v -> mostrarDialogoCerrarSesion());
-
         gpsHelper.obtenerUbicacion((lat, lon) -> {
             String ciudad = gpsHelper.obtenerCiudad(lat, lon, this);
             txtGPS.setText("Ciudad: " + ciudad);
+            appLogger.logEvent("gpsObtenido", "Ciudad detectada: " + ciudad);
         });
 
+        // Click listeners
         card_InformacionPersonal.setOnClickListener(v -> {
-            Intent intent = new Intent(perfil_activity.this, ecoUsuario_activity.class);
-            startActivity(intent);
+            appLogger.logEvent("clickBoton", "Presionó card_InformacionPersonal");
+            startActivity(new Intent(perfil_activity.this, ecoUsuario_activity.class));
         });
 
         card_dispositivos.setOnClickListener(v -> {
-            Intent intent = new Intent(perfil_activity.this, dispositivos_activity.class);
-            startActivity(intent);
-        });
-
-        btnPerfil_regresar.setOnClickListener(v -> {
-            // Creamos un Intent para ir a menu_activity
-            Intent intent = new Intent(perfil_activity.this, menu_activity.class);
-            startActivity(intent);
-            // para serrar la pestaña dde login y que no vuelva atras dar finish:
-            // finish();
+            appLogger.logEvent("clickBoton", "Presionó card_dispositivos");
+            startActivity(new Intent(perfil_activity.this, dispositivos_activity.class));
         });
 
         cardSoporte.setOnClickListener(v -> {
-            Intent intent = new Intent(perfil_activity.this, soporteActivity.class);
-            startActivity(intent);
+            appLogger.logEvent("clickBoton", "Presionó cardSoporte");
+            startActivity(new Intent(perfil_activity.this, soporteActivity.class));
         });
-        //+--------------------------------------------------------------------------------------------+
-        cardNotificaciones.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                // Desde Android 8 en adelante: va directo a la pantalla de notificaciones de la app
-                intent.setAction(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-                intent.putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, getPackageName());
-            } else {
-                // Compatibilidad con versiones anteriores
-                intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                intent.addCategory(Intent.CATEGORY_DEFAULT);
-                intent.setData(android.net.Uri.parse("package:" + getPackageName()));
-            }
 
-            try {
-                startActivity(intent);
-            } catch (Exception e) {
-                Toast.makeText(this, "No se pudo abrir la configuración de notificaciones", Toast.LENGTH_SHORT).show();
-            }
+        cardNotificaciones.setOnClickListener(v -> {
+            appLogger.logEvent("clickBoton", "Presionó cardNotificaciones");
+            abrirConfiguracionNotificaciones();
         });
+
+        btnPerfil_regresar.setOnClickListener(v -> {
+            appLogger.logEvent("clickBoton", "Presionó btnPerfil_regresar");
+            startActivity(new Intent(perfil_activity.this, menu_activity.class));
+        });
+
+        card_logout.setOnClickListener(v -> {
+            appLogger.logEvent("clickBoton", "Presionó card_logout");
+            mostrarDialogoCerrarSesion();
+        });
+    }
+
+    private void abrirConfiguracionNotificaciones() {
+        Intent intent = new Intent();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            intent.setAction(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            intent.putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, getPackageName());
+        } else {
+            intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.addCategory(Intent.CATEGORY_DEFAULT);
+            intent.setData(android.net.Uri.parse("package:" + getPackageName()));
+        }
+
+        try {
+            startActivity(intent);
+            appLogger.logEvent("notificaciones", "Se abrió la configuración de notificaciones");
+        } catch (Exception e) {
+            appLogger.logEvent("errorNotificaciones", "Error al abrir configuración de notificaciones: " + e.getMessage());
+            Toast.makeText(this, "No se pudo abrir la configuración de notificaciones", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void mostrarDialogoCerrarSesion() {
@@ -104,26 +111,25 @@ public class perfil_activity extends AppCompatActivity {
         builder.setTitle("Cerrar sesión");
         builder.setMessage("¿Estás seguro que deseas cerrar sesión?");
         builder.setPositiveButton("Sí", (dialog, which) -> {
+            appLogger.logEvent("cerrarSesion", "Usuario confirmó cerrar sesión");
             Toast.makeText(this, "Cerrando sesión en 3 segundos...", Toast.LENGTH_SHORT).show();
 
-            // Esperar 3 segundos antes de cerrar sesión
             new Handler().postDelayed(() -> {
                 auth.signOut();
-                // cerrar sesión Firebase
+                appLogger.logEvent("cerrarSesion", "Sesión cerrada correctamente");
 
-                Toast.makeText(this, "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show();
-
-                // Ir a MainActivity
                 Intent intent = new Intent(perfil_activity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
             }, 3000);
         });
-        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+
+        builder.setNegativeButton("Cancelar", (dialog, which) -> {
+            appLogger.logEvent("cerrarSesion", "Usuario canceló cerrar sesión");
+            dialog.dismiss();
+        });
+
         builder.show();
     }
 }
-
-
-

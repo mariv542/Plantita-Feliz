@@ -20,6 +20,7 @@ import com.example.happyplant.model.Planta;
 import com.example.happyplant.model.Rango;
 import com.example.happyplant.model.Usuario;
 import com.example.happyplant.utils.GPSHelper;
+import com.example.happyplant.utils.appLogger;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,10 +30,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -43,12 +42,22 @@ public class menu_activity extends AppCompatActivity {
     private GPSHelper gpsHelper;
     private Usuario usuarioLogueado;
     private ImageView imgPlanta;
-    private ImageButton btnMenu_perfil,btnMenu_ecoControl,btnMenu_ecoPlanta,btnMenu_ecoAviso,btnMenu_ecoAvance ;
+    private ImageButton btnMenu_perfil, btnMenu_ecoControl, btnMenu_ecoPlanta, btnMenu_ecoAviso, btnMenu_ecoAvance;
+    private appLogger appLogger; // logger
+
     @Override
-    protected void onCreate(Bundle saveInstanceState){
-        super.onCreate(saveInstanceState);
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
-        //+--------------------------------------------------------------------------------------------+
+
+        // Inicializar appLogger con UID o "anonimo"
+        String uid = "anonimo";
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) uid = firebaseUser.getUid();
+        appLogger = new appLogger(uid);
+
+        // Log: abrir pantalla
+        appLogger.logEvent("abrirPantalla", "Usuario abrió menu_activity");
 
         btnMenu_ecoAvance = findViewById(R.id.btn_menu_ecoAvance);
         btnMenu_ecoAviso = findViewById(R.id.btn_menu_ecoAviso);
@@ -56,60 +65,42 @@ public class menu_activity extends AppCompatActivity {
         btnMenu_ecoControl = findViewById(R.id.btn_menu_ecoControl);
         btnMenu_perfil = findViewById(R.id.btn_menu_perfil);
         imgPlanta = findViewById(R.id.imgHumedad);
-        // Notificaciones
+
         verificarPermisoNotificaciones();
         cargarUsuarioLogueado();
 
-
-
-        //Para GPS
         txtGPS = findViewById(R.id.txtGPS);
-
         gpsHelper = new GPSHelper(this);
         gpsHelper.obtenerUbicacion((lat, lon) -> {
             String ciudad = gpsHelper.obtenerCiudad(lat, lon, this);
             txtGPS.setText("Ciudad: " + ciudad);
+            appLogger.logEvent("gpsObtenido", "Ciudad detectada: " + ciudad);
         });
-        //+--------------------------------------------------------------------------------------------+
 
+        // Log de clicks en los botones
         btnMenu_ecoAvance.setOnClickListener(v -> {
-            // Creamos un Intent para ir a menu_activity
-            Intent intent = new Intent(menu_activity.this, ecoAvance_activity.class);
-            startActivity(intent);
-            // para serrar la pestaña dde login y que no vuelva atras dar finish:
-            // finish();
+            appLogger.logEvent("clickBoton", "Presionó btnMenu_ecoAvance");
+            startActivity(new Intent(menu_activity.this, ecoAvance_activity.class));
         });
 
         btnMenu_ecoAviso.setOnClickListener(v -> {
-            // Creamos un Intent para ir a menu_activity
-            Intent intent = new Intent(menu_activity.this, ecoAviso_activity.class);
-            startActivity(intent);
-            // para serrar la pestaña dde login y que no vuelva atras dar finish:
-            // finish();
+            appLogger.logEvent("clickBoton", "Presionó btnMenu_ecoAviso");
+            startActivity(new Intent(menu_activity.this, ecoAviso_activity.class));
         });
 
         btnMenu_ecoPlanta.setOnClickListener(v -> {
-            // Creamos un Intent para ir a menu_activity
-            Intent intent = new Intent(menu_activity.this, ecoPlanta_activity.class);
-            startActivity(intent);
-            // para serrar la pestaña dde login y que no vuelva atras dar finish:
-            // finish();
+            appLogger.logEvent("clickBoton", "Presionó btnMenu_ecoPlanta");
+            startActivity(new Intent(menu_activity.this, ecoPlanta_activity.class));
         });
 
         btnMenu_ecoControl.setOnClickListener(v -> {
-            // Creamos un Intent para ir a menu_activity
-            Intent intent = new Intent(menu_activity.this, ecoControl_activity.class);
-            startActivity(intent);
-            // para serrar la pestaña dde login y que no vuelva atras dar finish:
-            // finish();
+            appLogger.logEvent("clickBoton", "Presionó btnMenu_ecoControl");
+            startActivity(new Intent(menu_activity.this, ecoControl_activity.class));
         });
 
         btnMenu_perfil.setOnClickListener(v -> {
-            // Creamos un Intent para ir a menu_activity
-            Intent intent = new Intent(menu_activity.this, perfil_activity.class);
-            startActivity(intent);
-            // para serrar la pestaña dde login y que no vuelva atras dar finish:
-            // finish();
+            appLogger.logEvent("clickBoton", "Presionó btnMenu_perfil");
+            startActivity(new Intent(menu_activity.this, perfil_activity.class));
         });
     }
 
@@ -120,6 +111,7 @@ public class menu_activity extends AppCompatActivity {
             }
         }
     }
+
     private void cargarUsuarioLogueado() {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser == null) return;
@@ -136,21 +128,25 @@ public class menu_activity extends AppCompatActivity {
                                 usuarioLogueado = userSnap.getValue(Usuario.class);
                                 usuarioLogueado.setId(userSnap.getKey());
 
-                                // Cargar planta del usuario
+                                appLogger.logEvent("cargarUsuario", "Usuario logueado: " + usuarioLogueado.getEmail());
+
                                 cargarPlantaUsuario();
                                 break;
                             }
                         } else {
                             Toast.makeText(menu_activity.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
+                            appLogger.logEvent("errorUsuario", "No se encontró el usuario con email: " + email);
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Log.e("MenuActivity", "Error al consultar usuario", error.toException());
+                        appLogger.logEvent("errorBD", "Error al consultar usuario: " + error.getMessage());
                     }
                 });
     }
+
     private void cargarPlantaUsuario() {
         if (usuarioLogueado == null) return;
 
@@ -164,6 +160,7 @@ public class menu_activity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.exists()) {
                     Toast.makeText(menu_activity.this, "No hay plantas registradas para este usuario", Toast.LENGTH_SHORT).show();
+                    appLogger.logEvent("errorPlantas", "No hay plantas registradas para el usuario: " + usuarioLogueado.getEmail());
                     return;
                 }
 
@@ -174,18 +171,14 @@ public class menu_activity extends AppCompatActivity {
                     if (planta == null) continue;
 
                     planta.setId(plantaSnap.getKey());
-                    planta.cargarDatosDesdeSnapshot(plantaSnap); // Carga temperaturas, humedades, etc.
-
+                    planta.cargarDatosDesdeSnapshot(plantaSnap);
                     mapPlantas.put(planta.getId(), planta);
                 }
 
                 usuarioLogueado.setPlantas(mapPlantas);
+                appLogger.logEvent("cargarPlantas", "Plantas cargadas para usuario: " + usuarioLogueado.getEmail());
 
-                // --------------------------------------------------------
-                // **BUSCAR LA PLANTA "Rosarito"**
-                // --------------------------------------------------------
                 Planta plantaRosarito = null;
-
                 for (Planta p : mapPlantas.values()) {
                     if (p.getNombre() != null && p.getNombre().equalsIgnoreCase("Rosarito")) {
                         plantaRosarito = p;
@@ -195,16 +188,13 @@ public class menu_activity extends AppCompatActivity {
 
                 if (plantaRosarito == null) {
                     Toast.makeText(menu_activity.this, "No se encontró la planta Rosarito", Toast.LENGTH_SHORT).show();
+                    appLogger.logEvent("errorPlanta", "No se encontró la planta Rosarito");
                     return;
                 }
 
-                Log.d("MenuActivity", "🌱 Planta detectada: Rosarito");
+                appLogger.logEvent("plantaDetectada", "Planta Rosarito encontrada");
 
-                // --------------------------------------------------------
-                // **OBTENER LA HUMEDAD MÁS RECIENTE**
-                // --------------------------------------------------------
                 if (plantaRosarito.getHumedadesSuelo() != null && !plantaRosarito.getHumedadesSuelo().isEmpty()) {
-
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
                     sdf.setTimeZone(TimeZone.getDefault());
 
@@ -222,48 +212,45 @@ public class menu_activity extends AppCompatActivity {
                             }
                         } catch (Exception e) {
                             Log.e("MenuActivity", "❗ Error parseando fecha humedad: " + humedad.getFecha(), e);
+                            appLogger.logEvent("errorParseHumedad", "Error parseando fecha humedad: " + humedad.getFecha());
                         }
                     }
 
                     if (ultimoRegistro != null) {
                         double humedadActual = ultimoRegistro.getValor();
-                        Log.d("MenuActivity", "💧 Última humedad registrada: " + humedadActual + " (" + ultimoRegistro.getFecha() + ")");
-
+                        appLogger.logEvent("humedadActual", "Última humedad de Rosarito: " + humedadActual + " (" + ultimoRegistro.getFecha() + ")");
                         actualizarImagenHumedad(humedadActual, plantaRosarito);
                     } else {
                         Toast.makeText(menu_activity.this, "No se pudo determinar la última humedad de Rosarito", Toast.LENGTH_SHORT).show();
+                        appLogger.logEvent("errorHumedad", "No se pudo determinar la última humedad de Rosarito");
                     }
 
                 } else {
                     Toast.makeText(menu_activity.this, "La planta Rosarito no tiene registros de humedad.", Toast.LENGTH_SHORT).show();
+                    appLogger.logEvent("errorHumedad", "La planta Rosarito no tiene registros de humedad");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("MenuActivity", "Error al cargar planta", error.toException());
+                appLogger.logEvent("errorBD", "Error al cargar planta: " + error.getMessage());
             }
         });
     }
 
-
     private void actualizarImagenHumedad(double humedadActual, Planta planta) {
-            if (planta == null || planta.getParametros() == null || planta.getParametros().getRangoHumedadSuelo() == null) return;
+        if (planta == null || planta.getParametros() == null || planta.getParametros().getRangoHumedadSuelo() == null) return;
 
-            Log.d("MenuActivity", "🌱 Planta seleccionada: " + planta.getNombre());
-            Log.d("MenuActivity", "💧 Humedad actual: " + humedadActual);
-            Rango rango = planta.getParametros().getRangoHumedadSuelo();
-            Log.d("MenuActivity", "🔽 Rango mínimo permitido: " + rango.getMinimo());
-            Log.d("MenuActivity", "🔼 Rango máximo permitido: " + rango.getMaximo());
-            if (humedadActual < rango.getMinimo()) {
-                imgPlanta.setImageResource(R.drawable.planta_triste); // Falta exeso de humedad
-            } else if (humedadActual > rango.getMaximo()) {
-                imgPlanta.setImageResource(R.drawable.planta_normal); // Fañta de humedad
-            } else {
-                imgPlanta.setImageResource(R.drawable.planta_feliz); // Dentro del rango
-            }
+        Rango rango = planta.getParametros().getRangoHumedadSuelo();
+        if (humedadActual < rango.getMinimo()) {
+            imgPlanta.setImageResource(R.drawable.planta_triste);
+        } else if (humedadActual > rango.getMaximo()) {
+            imgPlanta.setImageResource(R.drawable.planta_normal);
+        } else {
+            imgPlanta.setImageResource(R.drawable.planta_feliz);
         }
 
+        appLogger.logEvent("actualizarImagenHumedad", "Imagen actualizada para Rosarito con humedad: " + humedadActual);
     }
-
-
+}
