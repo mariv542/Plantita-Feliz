@@ -62,7 +62,7 @@ dependencies {
 
     //  MPAndroidChart
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
+    //  Hacer la Foto circular
     implementation ("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")
 
